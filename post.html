@@ -3,8 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Why Your Eyes Hurt After Using Phone</title>
+<title>Why Your Eyes Hurt After Using Phone — Optoverse</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;1,8..60,300&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -18,34 +19,104 @@
     --rule: #d9cdb8;
   }
 
+  html { scroll-behavior: smooth; }
+
   body {
     background-color: var(--warm-bg);
     color: var(--ink);
     font-family: 'Source Serif 4', Georgia, serif;
     font-size: 18px;
     line-height: 1.8;
+    overflow-x: hidden;
   }
 
+  /* ── 3D Canvas ── */
+  #post-canvas {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.12;
+  }
+
+  /* ── Nav ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 36px;
+    height: 64px;
+    background: rgba(250,246,239,0.92);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid #d9cdb8;
+    transition: box-shadow 0.3s;
+  }
+
+  nav.scrolled { box-shadow: 0 2px 20px rgba(26,18,8,0.08); }
+
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    color: var(--ink);
+    text-decoration: none;
+    letter-spacing: -0.02em;
+  }
+
+  .nav-logo span { color: var(--rust); }
+
+  .nav-back {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .nav-back:hover { color: var(--rust); }
+
+  /* ── Reading progress bar ── */
+  .progress-bar {
+    position: fixed;
+    top: 64px; left: 0;
+    height: 2px;
+    background: var(--rust);
+    z-index: 99;
+    width: 0%;
+    transition: width 0.1s linear;
+  }
+
+  /* ── Page wrap ── */
   .page-wrap {
+    position: relative;
+    z-index: 1;
     max-width: 740px;
     margin: 0 auto;
-    padding: 60px 28px 100px;
+    padding: 80px 28px 100px;
   }
 
   /* ── Header ── */
   .blog-header {
     text-align: center;
-    padding-bottom: 48px;
-    border-bottom: 2px solid var(--rule);
+    padding-bottom: 52px;
+    border-bottom: 1px solid var(--rule);
     margin-bottom: 52px;
   }
 
   .tag {
     display: inline-block;
     font-family: 'Source Serif 4', serif;
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 400;
-    letter-spacing: 0.18em;
+    letter-spacing: 0.2em;
     text-transform: uppercase;
     color: var(--rust);
     border: 1px solid var(--rust);
@@ -64,18 +135,10 @@
     letter-spacing: -0.01em;
   }
 
-  .byline {
-    font-size: 14px;
-    color: var(--muted);
-    letter-spacing: 0.04em;
-  }
+  .byline { font-size: 14px; color: var(--muted); letter-spacing: 0.04em; }
+  .byline span { color: var(--amber); }
 
-  .byline span {
-    color: var(--amber);
-    font-weight: 400;
-  }
-
-  /* ── Lead paragraph ── */
+  /* ── Lead ── */
   .lead {
     font-size: 1.15rem;
     color: #3a2e1f;
@@ -86,13 +149,9 @@
     line-height: 1.9;
   }
 
-  /* ── Body text ── */
-  p {
-    margin-bottom: 1.5rem;
-    color: #2a2015;
-  }
+  /* ── Body ── */
+  p { margin-bottom: 1.5rem; color: #2a2015; }
 
-  /* ── Headings ── */
   h2 {
     font-family: 'Playfair Display', Georgia, serif;
     font-size: 1.6rem;
@@ -106,7 +165,7 @@
     content: '';
     display: block;
     width: 36px;
-    height: 3px;
+    height: 2px;
     background: var(--rust);
     margin-bottom: 14px;
   }
@@ -116,11 +175,10 @@
     font-size: 1.15rem;
     font-weight: 700;
     color: var(--amber);
-    margin: 28px 0 10px;
+    margin: 30px 0 10px;
     font-style: italic;
   }
 
-  /* ── Lists ── */
   ul {
     padding-left: 0;
     list-style: none;
@@ -132,9 +190,11 @@
     position: relative;
     border-bottom: 1px solid var(--rule);
     color: #2a2015;
+    transition: padding-left 0.2s;
   }
 
   ul li:last-child { border-bottom: none; }
+  ul li:hover { padding-left: 34px; }
 
   ul li::before {
     content: '◆';
@@ -145,7 +205,7 @@
     top: 13px;
   }
 
-  /* ── Callout box ── */
+  /* ── Callout ── */
   .callout {
     background: var(--cream);
     border: 1px solid var(--rule);
@@ -153,50 +213,48 @@
     padding: 28px 30px;
     margin: 40px 0;
     border-radius: 0 6px 6px 0;
+    transition: box-shadow 0.3s;
   }
+
+  .callout:hover { box-shadow: 4px 4px 20px rgba(194,65,12,0.08); }
 
   .callout-title {
     font-family: 'Playfair Display', Georgia, serif;
     font-size: 1.1rem;
     font-weight: 700;
     color: var(--rust);
-    margin-bottom: 10px;
-    letter-spacing: 0.02em;
+    margin-bottom: 12px;
   }
 
-  .callout p {
-    margin: 0;
-    font-size: 0.97rem;
-    color: #3a2e1f;
-  }
+  .callout p { margin: 0; font-size: 0.97rem; color: #3a2e1f; }
 
-  /* ── 20-20-20 feature box ── */
+  /* ── 20-20-20 box ── */
   .rule-box {
     background: var(--ink);
     color: var(--cream);
-    padding: 36px 34px;
-    margin: 44px 0;
-    border-radius: 4px;
+    padding: 40px 36px;
+    margin: 48px 0;
+    border-radius: 6px;
     position: relative;
     overflow: hidden;
+    box-shadow: 0 20px 60px rgba(26,18,8,0.25);
   }
 
   .rule-box::after {
     content: '20';
     position: absolute;
-    right: -10px;
-    top: -20px;
+    right: -10px; top: -20px;
     font-family: 'Playfair Display', serif;
     font-size: 140px;
     font-weight: 700;
-    color: rgba(255,255,255,0.04);
+    color: rgba(255,255,255,0.03);
     line-height: 1;
     pointer-events: none;
   }
 
   .rule-box .rule-label {
-    font-size: 11px;
-    letter-spacing: 0.2em;
+    font-size: 10px;
+    letter-spacing: 0.22em;
     text-transform: uppercase;
     color: #e8916a;
     margin-bottom: 14px;
@@ -214,14 +272,20 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 18px;
-    margin-top: 22px;
+    margin-top: 24px;
   }
 
   .rule-step {
     text-align: center;
-    padding: 18px 12px;
-    border: 1px solid rgba(255,255,255,0.12);
+    padding: 20px 12px;
+    border: 1px solid rgba(255,255,255,0.1);
     border-radius: 4px;
+    transition: border-color 0.25s, background 0.25s;
+  }
+
+  .rule-step:hover {
+    border-color: rgba(232,145,106,0.4);
+    background: rgba(255,255,255,0.03);
   }
 
   .rule-step .num {
@@ -242,13 +306,9 @@
     margin: 4px 0 8px;
   }
 
-  .rule-step .desc {
-    font-size: 0.82rem;
-    color: #c8baa8;
-    line-height: 1.5;
-  }
+  .rule-step .desc { font-size: 0.82rem; color: #c8baa8; line-height: 1.5; }
 
-  /* ── Warning box ── */
+  /* ── Warning ── */
   .warning-box {
     background: #fff7ed;
     border: 1px solid #fed7aa;
@@ -274,51 +334,71 @@
   .conclusion {
     background: var(--cream);
     border: 1px solid var(--rule);
-    padding: 36px 34px;
+    padding: 40px 36px;
     margin-top: 52px;
-    border-radius: 4px;
+    border-radius: 6px;
     text-align: center;
   }
 
-  .conclusion p {
-    font-style: italic;
-    font-size: 1.08rem;
-    color: #3a2e1f;
-    margin-bottom: 0;
+  .conclusion p { font-style: italic; font-size: 1.08rem; color: #3a2e1f; margin-bottom: 1.2rem; }
+  .conclusion p:last-child { margin-bottom: 0; }
+  .conclusion .sign { margin-top: 22px; font-size: 0.85rem; color: var(--muted); letter-spacing: 0.06em; font-style: normal; }
+
+  hr.section-rule { border: none; border-top: 1px solid var(--rule); margin: 52px 0; }
+
+  /* ── Author block ── */
+  .author-block {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 28px;
+    background: var(--cream);
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    margin-top: 52px;
   }
 
-  .conclusion .sign {
-    margin-top: 22px;
-    font-size: 0.85rem;
-    color: var(--muted);
-    letter-spacing: 0.06em;
-    font-style: normal;
+  .author-avatar {
+    width: 56px;
+    height: 56px;
+    background: linear-gradient(135deg, #c2410c, #b45309);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    flex-shrink: 0;
   }
 
-  hr.section-rule {
-    border: none;
-    border-top: 1px solid var(--rule);
-    margin: 48px 0;
-  }
+  .author-name { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--ink); margin-bottom: 4px; }
+  .author-bio { font-size: 0.85rem; color: var(--muted); line-height: 1.5; }
 
   @media (max-width: 560px) {
     .rule-steps { grid-template-columns: 1fr; }
     .rule-step { display: flex; align-items: center; gap: 18px; text-align: left; }
     .rule-step .num { font-size: 2.2rem; }
+    .author-block { flex-direction: column; text-align: center; }
+    nav { padding: 0 20px; }
+    .page-wrap { padding: 80px 20px 80px; }
   }
 </style>
 </head>
-<body><nav style="position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 32px;height:64px;background:rgba(250,246,239,0.92);backdrop-filter:blur(16px);border-bottom:1px solid #d9cdb8;">
-  <a href="index.html" style="font-family:'Playfair Display',serif;font-size:1.3rem;color:#1a1208;text-decoration:none;letter-spacing:-0.02em;">Opto<span style="color:#c2410c;">verse</span></a>
-  <a href="blog.html" style="font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:#6b5e4a;text-decoration:none;">← All Posts</a>
+<body>
+
+<canvas id="post-canvas"></canvas>
+<div class="progress-bar" id="progressBar"></div>
+
+<nav id="postnav">
+  <a href="index.html" class="nav-logo">Opto<span>verse</span></a>
+  <a href="blog.html" class="nav-back">← All Posts</a>
 </nav>
-<div style="height:64px;"></div>
+
 <div class="page-wrap">
 
   <header class="blog-header">
     <div class="tag">Eye Health · Optometry</div>
     <h1>Why Your Eyes Hurt After Using Your Phone<br><em>(And How to Fix It)</em></h1>
-    <p class="byline">By <span>Dr. Reyansh</span> &nbsp;·&nbsp; April 2026 &nbsp;·&nbsp; 5 min read</p>
+    <p class="byline">By <span>Rashibul Islam</span> &nbsp;·&nbsp; April 2026 &nbsp;·&nbsp; 5 min read</p>
   </header>
 
   <p class="lead">You pick up your phone to check a notification. An hour later, your eyes are burning, your head is pounding, and the world looks slightly blurry. Sound familiar? You're not imagining it — and you're definitely not alone.</p>
@@ -351,7 +431,6 @@
 
   <div class="callout">
     <div class="callout-title">Your eyes might be strained if you notice:</div>
-    <p></p>
     <ul>
       <li>Burning or stinging sensation in the eyes</li>
       <li>Redness or watering eyes after screen use</li>
@@ -372,7 +451,7 @@
   <div class="rule-box">
     <div class="rule-label">The Golden Rule of Screen Breaks</div>
     <h2>The 20-20-20 Rule</h2>
-    <p style="color:#c8baa8; font-size:0.95rem; margin-bottom: 0;">Simple, free, and genuinely effective — every eye doctor swears by this.</p>
+    <p style="color:#c8baa8; font-size:0.95rem; margin-bottom:0;">Simple, free, and genuinely effective — every eye doctor swears by this.</p>
     <div class="rule-steps">
       <div class="rule-step">
         <span class="num">20</span>
@@ -425,18 +504,109 @@
     </ul>
   </div>
 
-  <p>Many people suffering from digital eye strain actually have a mild, uncorrected refractive error — meaning they slightly need glasses and don't know it. Their eyes compensate by working overtime, which is fine for occasional use but brutal after hours on a phone. A simple eye test can catch this.</p>
-
-  <p>Annual eye check-ups are not just for people who already wear glasses. They're for everyone.</p>
+  <p>Many people suffering from digital eye strain actually have a mild, uncorrected refractive error — meaning they slightly need glasses and don't know it. Annual eye check-ups are not just for people who already wear glasses. They're for everyone.</p>
 
   <hr class="section-rule">
 
   <div class="conclusion">
-    <p>Your eyes work every single waking hour without a break. They process colour, depth, movement, and detail simultaneously — all day, every day. The least we can do is give them a fighting chance. The 20-20-20 rule costs nothing. Adjusting your brightness takes ten seconds. Blinking is literally free. These are small habits, but over months and years, they make a genuine difference — not just to how your eyes feel today, but to your vision long-term.</p>
-    <p style="margin-top: 1.2rem;">Put the phone down for twenty seconds after reading this. Look outside. Then come back.</p>
+    <p>Your eyes work every single waking hour without a break. They process colour, depth, movement, and detail simultaneously — all day, every day. The least we can do is give them a fighting chance. The 20-20-20 rule costs nothing. Adjusting your brightness takes ten seconds. Blinking is literally free.</p>
+    <p>Put the phone down for twenty seconds after reading this. Look outside. Then come back.</p>
     <p class="sign">— Written by an optometrist who also loves his phone a little too much.</p>
   </div>
 
+  <div class="author-block">
+    <div class="author-avatar">👁</div>
+    <div>
+      <div class="author-name">Rashibul Islam, B.Optom</div>
+      <div class="author-bio">Practising optometrist from Murshidabad, West Bengal. Clinical experience across hospital and rural eye camps. Writing about eye health in plain language for everyday people.</div>
+    </div>
+  </div>
+
 </div>
+
+<script>
+/* Reading progress bar */
+window.addEventListener('scroll', () => {
+  const nav = document.getElementById('postnav');
+  nav.classList.toggle('scrolled', window.scrollY > 40);
+  const doc = document.documentElement;
+  const scrolled = (window.scrollY / (doc.scrollHeight - doc.clientHeight)) * 100;
+  document.getElementById('progressBar').style.width = scrolled + '%';
+});
+
+/* ── Three.js: warm floating particles for post page ── */
+(function() {
+  const canvas = document.getElementById('post-canvas');
+  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+
+  function resize() {
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+  }
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 100);
+  camera.position.z = 5;
+
+  // Warm dust motes
+  const count = 120;
+  const pos = new Float32Array(count * 3);
+  const vel = [];
+  for (let i = 0; i < count; i++) {
+    pos[i*3]   = (Math.random()-0.5) * 20;
+    pos[i*3+1] = (Math.random()-0.5) * 14;
+    pos[i*3+2] = (Math.random()-0.5) * 8 - 2;
+    vel.push({ x: (Math.random()-0.5)*0.004, y: (Math.random()-0.5)*0.003 + 0.001 });
+  }
+  const geo = new THREE.BufferGeometry();
+  const posAttr = new THREE.BufferAttribute(pos, 3);
+  geo.setAttribute('position', posAttr);
+  scene.add(new THREE.Points(geo, new THREE.PointsMaterial({
+    color: 0xc2410c, size: 0.06, transparent: true, opacity: 0.5
+  })));
+
+  // Soft rings
+  for (let i = 0; i < 3; i++) {
+    const ring = new THREE.Mesh(
+      new THREE.TorusGeometry(3 + i * 1.5, 0.008, 8, 60),
+      new THREE.MeshBasicMaterial({ color: 0xb45309, transparent: true, opacity: 0.04 + i * 0.01 })
+    );
+    ring.rotation.x = Math.random() * Math.PI;
+    ring.rotation.y = Math.random() * Math.PI;
+    ring.userData = { rx: 0.0003 * (i+1), ry: 0.0002 * (i+1) };
+    scene.add(ring);
+  }
+
+  resize();
+  window.addEventListener('resize', resize);
+
+  let t = 0;
+  function animate() {
+    requestAnimationFrame(animate);
+    t += 0.01;
+
+    // Float particles upward
+    for (let i = 0; i < count; i++) {
+      pos[i*3]   += vel[i].x;
+      pos[i*3+1] += vel[i].y;
+      if (pos[i*3+1] > 8) pos[i*3+1] = -8;
+      if (Math.abs(pos[i*3]) > 12) vel[i].x *= -1;
+    }
+    posAttr.needsUpdate = true;
+
+    scene.children.forEach(obj => {
+      if (obj.isMesh) {
+        obj.rotation.x += obj.userData.rx || 0;
+        obj.rotation.y += obj.userData.ry || 0;
+      }
+    });
+
+    renderer.render(scene, camera);
+  }
+  animate();
+})();
+</script>
 </body>
 </html>

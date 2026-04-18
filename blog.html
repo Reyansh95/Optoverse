@@ -6,10 +6,12 @@
 <title>Blog — Optoverse</title>
 <meta name="description" content="Eye health articles written by a practising optometrist. Simple, practical, and honest.">
 <link rel="stylesheet" href="style.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <style>
 .page-hero {
-  padding: 80px 32px 60px;
-  max-width: 1100px;
+  position: relative;
+  padding: 90px 36px 60px;
+  max-width: 1140px;
   margin: 0 auto;
   border-bottom: 1px solid var(--rule);
 }
@@ -17,34 +19,36 @@
 .posts-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
+  gap: 22px;
   margin-top: 40px;
 }
 
 .post-card {
   background: var(--card-bg);
   border: 1px solid var(--rule);
-  border-radius: 4px;
+  border-radius: 6px;
   padding: 32px;
-  transition: all 0.25s;
+  transition: all 0.3s;
   text-decoration: none;
   color: inherit;
   display: flex;
   flex-direction: column;
   position: relative;
   overflow: hidden;
+  backdrop-filter: blur(12px);
 }
 
 .post-card:hover {
   border-color: rgba(0,229,204,0.4);
-  transform: translateY(-3px);
+  transform: translateY(-4px);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.4), 0 0 30px rgba(0,229,204,0.05);
 }
 
 .post-card.featured {
   grid-column: span 3;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 40px;
+  gap: 44px;
   align-items: center;
   padding: 48px;
 }
@@ -53,14 +57,14 @@
   content: '';
   position: absolute;
   left: 0; top: 0; bottom: 0;
-  width: 3px;
-  background: var(--teal);
+  width: 2px;
+  background: linear-gradient(to bottom, var(--teal), transparent);
 }
 
 .post-number {
   font-family: var(--font-display);
   font-size: 4rem;
-  color: rgba(0,229,204,0.08);
+  color: rgba(0,229,204,0.07);
   line-height: 1;
   margin-bottom: 12px;
 }
@@ -78,22 +82,24 @@
 .coming-soon-overlay {
   position: absolute;
   inset: 0;
-  background: rgba(5,13,26,0.75);
-  backdrop-filter: blur(2px);
+  background: rgba(5,13,26,0.72);
+  backdrop-filter: blur(3px);
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 4px;
+  border-radius: 6px;
+  transition: opacity 0.3s;
 }
 
 .coming-soon-badge {
   font-size: 10px;
-  letter-spacing: 0.16em;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--white-dim);
   border: 1px solid var(--rule);
-  padding: 8px 20px;
+  padding: 8px 22px;
   border-radius: 2px;
+  background: rgba(5,13,26,0.4);
 }
 
 .filters {
@@ -110,7 +116,7 @@
   color: var(--white-dim);
   border: 1px solid var(--rule);
   background: transparent;
-  padding: 7px 18px;
+  padding: 8px 20px;
   border-radius: 2px;
   cursor: pointer;
   transition: all 0.2s;
@@ -120,18 +126,19 @@
 .filter-btn:hover,
 .filter-btn.active {
   color: var(--teal);
-  border-color: var(--teal);
+  border-color: rgba(0,229,204,0.5);
+  background: rgba(0,229,204,0.05);
 }
 
 @media (max-width: 900px) {
   .posts-grid { grid-template-columns: 1fr 1fr; }
-  .post-card.featured { grid-column: span 2; grid-template-columns: 1fr; gap: 20px; }
+  .post-card.featured { grid-column: span 2; grid-template-columns: 1fr; gap: 24px; }
 }
 
 @media (max-width: 600px) {
   .posts-grid { grid-template-columns: 1fr; }
   .post-card.featured { grid-column: span 1; }
-  .page-hero { padding: 60px 20px 40px; }
+  .page-hero { padding: 70px 20px 40px; }
 }
 </style>
 </head>
@@ -156,7 +163,7 @@
   <div class="page-hero fade-up">
     <div class="tag">The Blog</div>
     <h1 style="margin-bottom:16px;">Eye Health,<br><em>Explained Simply.</em></h1>
-    <p style="color:var(--white-dim); max-width:520px; font-size:1.05rem;">No jargon, no fear-mongering. Just practical, honest eye health content written by a practising optometrist for everyday people across India.</p>
+    <p style="color:var(--white-dim); max-width:520px; font-size:1.05rem;">No jargon, no fear-mongering. Just practical, honest eye health content written by a practising optometrist.</p>
     <div class="filters">
       <button class="filter-btn active">All</button>
       <button class="filter-btn">Eye Health</button>
@@ -169,29 +176,28 @@
   <section class="section">
     <div class="posts-grid">
 
-      <!-- Featured post -->
-      <a href="post.html" class="post-card featured fade-up">
+      <a href="post.html" class="post-card featured reveal">
         <div>
           <span class="post-tag">Eye Health · Digital Strain</span>
           <h2 style="font-size:1.8rem; margin:12px 0 18px; line-height:1.2;">Why Your Eyes Hurt After Using Your Phone</h2>
-          <p style="color:var(--white-dim); font-size:0.95rem; line-height:1.7; margin-bottom:24px;">Burning eyes, pounding head, blurry vision after screen time — you're not imagining it. Here's the full breakdown of digital eye strain: what causes it, what to watch for, and the simple habits that actually fix it.</p>
+          <p style="color:var(--white-dim); font-size:0.95rem; line-height:1.75; margin-bottom:24px;">Burning eyes, pounding head, blurry vision after screen time — you're not imagining it. Here's the full breakdown of digital eye strain: what causes it, what to watch for, and the simple habits that actually fix it.</p>
           <span class="btn btn-outline" style="display:inline-block; padding:10px 24px; font-size:11px;">Read Article →</span>
         </div>
         <div>
-          <div style="background:var(--navy-3); border:1px solid var(--rule); border-radius:4px; padding:32px; text-align:center;">
-            <div style="font-size:4rem; margin-bottom:16px;">📱</div>
+          <div style="background:var(--navy-3); border:1px solid var(--rule); border-radius:6px; padding:32px; text-align:center;">
+            <div style="font-size:3.5rem; margin-bottom:16px;">📱</div>
             <div style="font-family:var(--font-display); font-size:1.1rem; color:var(--white); margin-bottom:8px;">The 20-20-20 Rule</div>
             <div style="font-size:0.85rem; color:var(--white-dim);">Every 20 min → 20 sec → 20 feet away</div>
             <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-top:20px;">
-              <div style="background:rgba(0,229,204,0.08); border:1px solid var(--rule); padding:12px; border-radius:3px;">
+              <div style="background:rgba(0,229,204,0.07); border:1px solid var(--rule); padding:14px; border-radius:4px;">
                 <div style="font-family:var(--font-display); font-size:1.8rem; color:var(--teal);">20</div>
                 <div style="font-size:10px; color:var(--white-dim); letter-spacing:0.1em; text-transform:uppercase;">Min</div>
               </div>
-              <div style="background:rgba(0,229,204,0.08); border:1px solid var(--rule); padding:12px; border-radius:3px;">
+              <div style="background:rgba(0,229,204,0.07); border:1px solid var(--rule); padding:14px; border-radius:4px;">
                 <div style="font-family:var(--font-display); font-size:1.8rem; color:var(--teal);">20</div>
                 <div style="font-size:10px; color:var(--white-dim); letter-spacing:0.1em; text-transform:uppercase;">Sec</div>
               </div>
-              <div style="background:rgba(0,229,204,0.08); border:1px solid var(--rule); padding:12px; border-radius:3px;">
+              <div style="background:rgba(0,229,204,0.07); border:1px solid var(--rule); padding:14px; border-radius:4px;">
                 <div style="font-family:var(--font-display); font-size:1.8rem; color:var(--teal);">20</div>
                 <div style="font-size:10px; color:var(--white-dim); letter-spacing:0.1em; text-transform:uppercase;">Feet</div>
               </div>
@@ -200,8 +206,7 @@
         </div>
       </a>
 
-      <!-- Coming soon cards -->
-      <div class="post-card" style="position:relative;">
+      <div class="post-card reveal" style="position:relative;">
         <div class="post-number">02</div>
         <span class="post-tag">Digital Health</span>
         <div class="post-title">Do Blue Light Glasses Actually Work?</div>
@@ -210,7 +215,7 @@
         <div class="coming-soon-overlay"><span class="coming-soon-badge">Coming Soon</span></div>
       </div>
 
-      <div class="post-card" style="position:relative;">
+      <div class="post-card reveal reveal-delay-1" style="position:relative;">
         <div class="post-number">03</div>
         <span class="post-tag">Children</span>
         <div class="post-title">Signs Your Child Needs Glasses</div>
@@ -219,7 +224,7 @@
         <div class="coming-soon-overlay"><span class="coming-soon-badge">Coming Soon</span></div>
       </div>
 
-      <div class="post-card" style="position:relative;">
+      <div class="post-card reveal reveal-delay-2" style="position:relative;">
         <div class="post-number">04</div>
         <span class="post-tag">Clinical</span>
         <div class="post-title">Cataracts: What You Need to Know</div>
@@ -228,7 +233,7 @@
         <div class="coming-soon-overlay"><span class="coming-soon-badge">Coming Soon</span></div>
       </div>
 
-      <div class="post-card" style="position:relative;">
+      <div class="post-card reveal reveal-delay-3" style="position:relative;">
         <div class="post-number">05</div>
         <span class="post-tag">Eye Health</span>
         <div class="post-title">Why Dry Eyes Are Getting More Common</div>
@@ -255,16 +260,24 @@
 </footer>
 
 <script>
-  const toggle = document.getElementById('navToggle');
-  const links = document.getElementById('navLinks');
-  toggle.addEventListener('click', () => links.classList.toggle('open'));
-  document.querySelectorAll('.filter-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-    });
-  });
-</script>
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 40);
+});
+const toggle = document.getElementById('navToggle');
+const links = document.getElementById('navLinks');
+toggle.addEventListener('click', () => links.classList.toggle('open'));
 
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  });
+});
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
 </body>
 </html>
