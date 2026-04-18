@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About — Optoverse</title>
+<link rel="stylesheet" href="style.css">
+<style>
+.about-hero {
+  padding: 80px 32px 0;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.6fr;
+  gap: 64px;
+  align-items: start;
+  margin-top: 48px;
+}
+
+.about-card {
+  background: var(--card-bg);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: 36px;
+  position: sticky;
+  top: 84px;
+}
+
+.avatar {
+  width: 80px;
+  height: 80px;
+  background: linear-gradient(135deg, var(--teal), #0070c0);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.about-name {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  color: var(--white);
+  margin-bottom: 4px;
+}
+
+.about-role {
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--teal);
+  margin-bottom: 20px;
+}
+
+.about-detail {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--rule);
+  font-size: 0.88rem;
+  color: var(--white-dim);
+}
+
+.about-detail:last-of-type { border-bottom: none; }
+.about-detail .icon { font-size: 1rem; flex-shrink: 0; }
+
+.prose h2 {
+  margin: 48px 0 16px;
+  font-size: 1.5rem;
+}
+
+.prose h2:first-child { margin-top: 0; }
+
+.prose p {
+  color: var(--white-dim);
+  margin-bottom: 16px;
+  line-height: 1.8;
+}
+
+.prose p strong { color: var(--white); font-weight: 500; }
+
+.timeline {
+  margin: 24px 0;
+  border-left: 2px solid var(--rule);
+  padding-left: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.timeline-item { position: relative; }
+
+.timeline-item::before {
+  content: '';
+  position: absolute;
+  left: -30px;
+  top: 6px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--teal);
+  border: 2px solid var(--navy);
+}
+
+.timeline-year {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--teal);
+  margin-bottom: 4px;
+}
+
+.timeline-title {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  color: var(--white);
+  margin-bottom: 6px;
+}
+
+.timeline-desc {
+  font-size: 0.88rem;
+  color: var(--white-dim);
+  line-height: 1.65;
+}
+
+.values-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin: 20px 0;
+}
+
+.value-card {
+  background: var(--card-bg);
+  border: 1px solid var(--rule);
+  border-radius: 4px;
+  padding: 20px;
+}
+
+.value-icon { font-size: 1.5rem; margin-bottom: 8px; display: block; }
+.value-title { font-family: var(--font-display); font-size: 0.95rem; color: var(--white); margin-bottom: 6px; }
+.value-desc { font-size: 0.83rem; color: var(--white-dim); line-height: 1.6; }
+
+@media (max-width: 800px) {
+  .about-grid { grid-template-columns: 1fr; }
+  .about-card { position: static; }
+  .values-grid { grid-template-columns: 1fr; }
+  .about-hero { padding: 60px 20px 0; }
+}
+</style>
+</head>
+<body>
+
+<nav id="navbar">
+  <a href="index.html" class="nav-logo">Opto<span>verse</span></a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="blog.html">Blog</a></li>
+    <li><a href="notes.html">Notes</a></li>
+    <li><a href="about.html" class="active">About</a></li>
+    <li><a href="contact.html">Contact</a></li>
+    <li><a href="notes.html" class="nav-cta">Get Notes</a></li>
+  </ul>
+  <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<main>
+  <div class="about-hero fade-up">
+    <div class="tag">About</div>
+    <h1>The person behind<br><em>Optoverse.</em></h1>
+  </div>
+
+  <section class="section">
+    <div class="about-grid">
+
+      <div class="about-card fade-up">
+        <div class="avatar">👁</div>
+        <div class="about-name">Optometrist Rashibul</div>
+        <div class="about-role">B.Optom · Practising Optometrist</div>
+        <div class="about-detail"><span class="icon">📍</span> Kolkata / Murshidabad, West Bengal</div>
+        <div class="about-detail"><span class="icon">🏥</span> Checkoro.com Opticals, Kolkata</div>
+        <div class="about-detail"><span class="icon">🎓</span> B.Optom, West Bengal</div>
+        <div class="about-detail"><span class="icon">🏕️</span> Rural Eye Camp, Diamond Harbour</div>
+        <div style="margin-top:24px;">
+          <a href="contact.html" class="btn btn-primary" style="width:100%; text-align:center; display:block;">Get in Touch</a>
+        </div>
+      </div>
+
+      <div class="prose fade-up-2">
+        <h2>Hello.</h2>
+        <p>I'm Rashibul — an optometrist based in Kolkata, originally from Murshidabad. I started Optoverse because I kept noticing the same thing in my practice: <strong>people had questions their doctors never answered.</strong> Not because the doctors were bad — just because there's never enough time in a consultation to explain everything.</p>
+        <p>So I decided to write it down.</p>
+
+        <h2>My Background</h2>
+        <div class="timeline">
+          <div class="timeline-item">
+            <div class="timeline-year">Foundation</div>
+            <div class="timeline-title">B.Optom — Optometry Degree</div>
+            <div class="timeline-desc">Completed my optometry degree in West Bengal, building a strong foundation in ocular anatomy, refraction, binocular vision, and contact lens practice.</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-year">Clinical Experience</div>
+            <div class="timeline-title">50-Day Rural Eye Camp — Diamond Harbour</div>
+            <div class="timeline-desc">One of the most formative experiences of my career. Personally examined over a thousand patients across multiple rural locations with Sebaashray — many of whom had never had an eye exam before. Observed high cataract prevalence and unusually low rates of astigmatism in the population.</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-year">Current</div>
+            <div class="timeline-title">Optometrist — Checkoro.com Opticals, Kolkata</div>
+            <div class="timeline-desc">Practising in Kolkata while writing for Optoverse and working toward returning to my hometown of Murshidabad to eventually run a small clinic of my own.</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-year">2026</div>
+            <div class="timeline-title">Optoverse Launched</div>
+            <div class="timeline-desc">Started this blog to make eye health information accessible for everyday people and useful for optometry students across India.</div>
+          </div>
+        </div>
+
+        <h2>Why Optoverse?</h2>
+        <p>Most eye health content online is either too clinical (written for doctors) or too vague (written by people who aren't). I wanted something in the middle — <strong>accurate, honest, and written in the kind of language I actually use with patients.</strong></p>
+        <p>Optoverse is also a resource for optometry students. The notes section contains study materials, solved past papers, and clinical summaries — things I wished existed when I was studying.</p>
+
+        <div class="values-grid">
+          <div class="value-card">
+            <span class="value-icon">🎯</span>
+            <div class="value-title">Accuracy First</div>
+            <p class="value-desc">Everything here is clinically grounded. No myths, no clickbait health claims.</p>
+          </div>
+          <div class="value-card">
+            <span class="value-icon">🗣️</span>
+            <div class="value-title">Plain Language</div>
+            <p class="value-desc">If I wouldn't say it to a patient, I won't write it on this site.</p>
+          </div>
+          <div class="value-card">
+            <span class="value-icon">🏕️</span>
+            <div class="value-title">Community Care</div>
+            <p class="value-desc">Rural eye health is personal to me. Outreach matters.</p>
+          </div>
+          <div class="value-card">
+            <span class="value-icon">📖</span>
+            <div class="value-title">Always Learning</div>
+            <p class="value-desc">Optometry keeps evolving. So does this site.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="footer-logo">Opto<span>verse</span></div>
+  <p>Eye health simplified. Written by Optometrist Rashibul, West Bengal.</p>
+  <ul class="footer-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="blog.html">Blog</a></li>
+    <li><a href="notes.html">Notes</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <p class="footer-copy">© 2026 Optoverse. All rights reserved.</p>
+</footer>
+
+<script>
+  const toggle = document.getElementById('navToggle');
+  const links = document.getElementById('navLinks');
+  toggle.addEventListener('click', () => links.classList.toggle('open'));
+</script>
+</body>
+</html>

@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Why Your Eyes Hurt After Using Phone</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;1,8..60,300&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #1a1208;
+    --warm-bg: #faf6ef;
+    --cream: #f3ede0;
+    --rust: #c2410c;
+    --amber: #b45309;
+    --muted: #6b5e4a;
+    --rule: #d9cdb8;
+  }
+
+  body {
+    background-color: var(--warm-bg);
+    color: var(--ink);
+    font-family: 'Source Serif 4', Georgia, serif;
+    font-size: 18px;
+    line-height: 1.8;
+  }
+
+  .page-wrap {
+    max-width: 740px;
+    margin: 0 auto;
+    padding: 60px 28px 100px;
+  }
+
+  /* ── Header ── */
+  .blog-header {
+    text-align: center;
+    padding-bottom: 48px;
+    border-bottom: 2px solid var(--rule);
+    margin-bottom: 52px;
+  }
+
+  .tag {
+    display: inline-block;
+    font-family: 'Source Serif 4', serif;
+    font-size: 11px;
+    font-weight: 400;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--rust);
+    border: 1px solid var(--rust);
+    padding: 4px 14px;
+    border-radius: 2px;
+    margin-bottom: 28px;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: clamp(2rem, 5.5vw, 3.1rem);
+    font-weight: 700;
+    line-height: 1.15;
+    color: var(--ink);
+    margin-bottom: 22px;
+    letter-spacing: -0.01em;
+  }
+
+  .byline {
+    font-size: 14px;
+    color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+
+  .byline span {
+    color: var(--amber);
+    font-weight: 400;
+  }
+
+  /* ── Lead paragraph ── */
+  .lead {
+    font-size: 1.15rem;
+    color: #3a2e1f;
+    font-style: italic;
+    border-left: 3px solid var(--rust);
+    padding-left: 22px;
+    margin-bottom: 44px;
+    line-height: 1.9;
+  }
+
+  /* ── Body text ── */
+  p {
+    margin-bottom: 1.5rem;
+    color: #2a2015;
+  }
+
+  /* ── Headings ── */
+  h2 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin: 52px 0 18px;
+    line-height: 1.25;
+  }
+
+  h2::before {
+    content: '';
+    display: block;
+    width: 36px;
+    height: 3px;
+    background: var(--rust);
+    margin-bottom: 14px;
+  }
+
+  h3 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--amber);
+    margin: 28px 0 10px;
+    font-style: italic;
+  }
+
+  /* ── Lists ── */
+  ul {
+    padding-left: 0;
+    list-style: none;
+    margin: 12px 0 24px;
+  }
+
+  ul li {
+    padding: 7px 0 7px 28px;
+    position: relative;
+    border-bottom: 1px solid var(--rule);
+    color: #2a2015;
+  }
+
+  ul li:last-child { border-bottom: none; }
+
+  ul li::before {
+    content: '◆';
+    position: absolute;
+    left: 0;
+    color: var(--rust);
+    font-size: 9px;
+    top: 13px;
+  }
+
+  /* ── Callout box ── */
+  .callout {
+    background: var(--cream);
+    border: 1px solid var(--rule);
+    border-left: 4px solid var(--rust);
+    padding: 28px 30px;
+    margin: 40px 0;
+    border-radius: 0 6px 6px 0;
+  }
+
+  .callout-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--rust);
+    margin-bottom: 10px;
+    letter-spacing: 0.02em;
+  }
+
+  .callout p {
+    margin: 0;
+    font-size: 0.97rem;
+    color: #3a2e1f;
+  }
+
+  /* ── 20-20-20 feature box ── */
+  .rule-box {
+    background: var(--ink);
+    color: var(--cream);
+    padding: 36px 34px;
+    margin: 44px 0;
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .rule-box::after {
+    content: '20';
+    position: absolute;
+    right: -10px;
+    top: -20px;
+    font-family: 'Playfair Display', serif;
+    font-size: 140px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.04);
+    line-height: 1;
+    pointer-events: none;
+  }
+
+  .rule-box .rule-label {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #e8916a;
+    margin-bottom: 14px;
+  }
+
+  .rule-box h2 {
+    color: #f3ede0;
+    font-size: 1.45rem;
+    margin: 0 0 18px;
+  }
+
+  .rule-box h2::before { background: #e8916a; }
+
+  .rule-steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin-top: 22px;
+  }
+
+  .rule-step {
+    text-align: center;
+    padding: 18px 12px;
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 4px;
+  }
+
+  .rule-step .num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.8rem;
+    font-weight: 700;
+    color: #e8916a;
+    line-height: 1;
+    display: block;
+  }
+
+  .rule-step .unit {
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #b0a090;
+    display: block;
+    margin: 4px 0 8px;
+  }
+
+  .rule-step .desc {
+    font-size: 0.82rem;
+    color: #c8baa8;
+    line-height: 1.5;
+  }
+
+  /* ── Warning box ── */
+  .warning-box {
+    background: #fff7ed;
+    border: 1px solid #fed7aa;
+    border-left: 4px solid var(--amber);
+    padding: 24px 28px;
+    margin: 36px 0;
+    border-radius: 0 6px 6px 0;
+  }
+
+  .warning-box .warning-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--amber);
+    margin-bottom: 8px;
+  }
+
+  .warning-box ul { margin: 8px 0 0; }
+  .warning-box ul li { border-color: #fed7aa; color: #431407; }
+  .warning-box ul li::before { color: var(--amber); }
+
+  /* ── Conclusion ── */
+  .conclusion {
+    background: var(--cream);
+    border: 1px solid var(--rule);
+    padding: 36px 34px;
+    margin-top: 52px;
+    border-radius: 4px;
+    text-align: center;
+  }
+
+  .conclusion p {
+    font-style: italic;
+    font-size: 1.08rem;
+    color: #3a2e1f;
+    margin-bottom: 0;
+  }
+
+  .conclusion .sign {
+    margin-top: 22px;
+    font-size: 0.85rem;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    font-style: normal;
+  }
+
+  hr.section-rule {
+    border: none;
+    border-top: 1px solid var(--rule);
+    margin: 48px 0;
+  }
+
+  @media (max-width: 560px) {
+    .rule-steps { grid-template-columns: 1fr; }
+    .rule-step { display: flex; align-items: center; gap: 18px; text-align: left; }
+    .rule-step .num { font-size: 2.2rem; }
+  }
+</style>
+</head>
+<body><nav style="position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 32px;height:64px;background:rgba(250,246,239,0.92);backdrop-filter:blur(16px);border-bottom:1px solid #d9cdb8;">
+  <a href="index.html" style="font-family:'Playfair Display',serif;font-size:1.3rem;color:#1a1208;text-decoration:none;letter-spacing:-0.02em;">Opto<span style="color:#c2410c;">verse</span></a>
+  <a href="blog.html" style="font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:#6b5e4a;text-decoration:none;">← All Posts</a>
+</nav>
+<div style="height:64px;"></div>
+<div class="page-wrap">
+
+  <header class="blog-header">
+    <div class="tag">Eye Health · Optometry</div>
+    <h1>Why Your Eyes Hurt After Using Your Phone<br><em>(And How to Fix It)</em></h1>
+    <p class="byline">By <span>Dr. Reyansh</span> &nbsp;·&nbsp; April 2026 &nbsp;·&nbsp; 5 min read</p>
+  </header>
+
+  <p class="lead">You pick up your phone to check a notification. An hour later, your eyes are burning, your head is pounding, and the world looks slightly blurry. Sound familiar? You're not imagining it — and you're definitely not alone.</p>
+
+  <p>In India, the average person spends nearly 7 hours a day staring at a screen — phones, laptops, TVs. Our eyes were simply not designed for this. The good news? Most of the damage is reversible, and the fixes are surprisingly simple. Let's break it all down.</p>
+
+  <h2>What Is Digital Eye Strain?</h2>
+
+  <p>Digital eye strain — sometimes called Computer Vision Syndrome — is a group of eye and vision problems that come from prolonged screen use. It's not a disease. Think of it as your eyes sending you a strongly-worded complaint letter after hours of overwork.</p>
+
+  <p>Your eyes are constantly focusing and refocusing when you look at a screen. Unlike a printed page, a screen emits its own light, flickers (even when you can't see it), and often has glare. All of this forces your eye muscles to work harder than usual — for hours at a stretch.</p>
+
+  <h2>Why Exactly Does This Happen?</h2>
+
+  <h3>You Blink Less Than You Think</h3>
+  <p>Normally, we blink about 15–20 times per minute. When we're staring at a screen, that drops to as few as 5–7 times per minute. Blinking is how your eyes stay lubricated. Blink less, and the surface of your eye starts to dry out — causing that burning, gritty feeling.</p>
+
+  <h3>Your Screen Is Too Close (Or Too Far)</h3>
+  <p>Most people hold their phones about 20–30 cm from their face — far closer than a book or a newspaper. The closer the object, the harder your eye's focusing muscle (the ciliary muscle) has to work. Do this for two hours straight, and that muscle gets fatigued, just like any other muscle in your body.</p>
+
+  <h3>Blue Light Isn't Helping</h3>
+  <p>Screens emit blue light — a high-energy wavelength that scatters more inside the eye and contributes to visual discomfort. It doesn't cause permanent damage in the way some articles claim, but it does make it harder for your eyes to focus and harder for your brain to wind down at night.</p>
+
+  <h3>Bad Lighting Around You</h3>
+  <p>Using your phone in a dark room forces your eyes to constantly adjust between the bright screen and the dark background. That contrast battle is exhausting for your visual system.</p>
+
+  <hr class="section-rule">
+
+  <h2>Symptoms to Watch For</h2>
+
+  <div class="callout">
+    <div class="callout-title">Your eyes might be strained if you notice:</div>
+    <p></p>
+    <ul>
+      <li>Burning or stinging sensation in the eyes</li>
+      <li>Redness or watering eyes after screen use</li>
+      <li>Headaches, especially around the forehead or temples</li>
+      <li>Blurred vision when you look away from the screen</li>
+      <li>Difficulty focusing on distant objects after screen time</li>
+      <li>Neck or shoulder pain (yes, your posture and your eyes are connected)</li>
+      <li>Feeling unusually tired after even short amounts of screen time</li>
+    </ul>
+  </div>
+
+  <p>These symptoms usually ease up after rest. But if they're showing up every single day, that's your body telling you something needs to change.</p>
+
+  <hr class="section-rule">
+
+  <h2>How to Actually Fix It</h2>
+
+  <div class="rule-box">
+    <div class="rule-label">The Golden Rule of Screen Breaks</div>
+    <h2>The 20-20-20 Rule</h2>
+    <p style="color:#c8baa8; font-size:0.95rem; margin-bottom: 0;">Simple, free, and genuinely effective — every eye doctor swears by this.</p>
+    <div class="rule-steps">
+      <div class="rule-step">
+        <span class="num">20</span>
+        <span class="unit">Minutes</span>
+        <span class="desc">Every 20 minutes of screen use</span>
+      </div>
+      <div class="rule-step">
+        <span class="num">20</span>
+        <span class="unit">Seconds</span>
+        <span class="desc">Take a 20-second break</span>
+      </div>
+      <div class="rule-step">
+        <span class="num">20</span>
+        <span class="unit">Feet Away</span>
+        <span class="desc">Look at something ~6 metres away</span>
+      </div>
+    </div>
+  </div>
+
+  <p>Why does this work? Looking at something far away lets your ciliary muscle relax completely — it's essentially a mini-recovery session for your eyes. Set a phone alarm. Use an app. Put a sticky note on your screen. Whatever it takes — make it a habit.</p>
+
+  <h3>Adjust Your Screen and Environment</h3>
+  <ul>
+    <li>Increase font size so you're not squinting to read texts and captions</li>
+    <li>Reduce screen brightness to match the ambient lighting in your room</li>
+    <li>Enable Night Mode or Warm Display after sunset to reduce blue light</li>
+    <li>Hold your phone at least 40–45 cm from your eyes — roughly arm's length</li>
+    <li>Never use your phone in complete darkness; keep a dim light on in the room</li>
+  </ul>
+
+  <h3>Blink More Consciously</h3>
+  <p>This sounds too simple, but it works. Every time you unlock your phone, blink five times deliberately. It takes two seconds and helps reset your tear film. If your eyes feel dry frequently, over-the-counter lubricating eye drops (called artificial tears) are safe to use and give instant relief.</p>
+
+  <h3>Take Real Breaks</h3>
+  <p>The 20-20-20 rule handles short breaks. But also aim for at least one 10–15 minute screen-free period every 2 hours. Look out a window. Take a walk. Do something that doesn't involve a glowing rectangle — your eyes will thank you.</p>
+
+  <hr class="section-rule">
+
+  <h2>When to See an Optometrist</h2>
+
+  <div class="warning-box">
+    <div class="warning-title">Don't ignore these signs — book an eye check:</div>
+    <ul>
+      <li>Eye strain symptoms persist even after rest and reducing screen time</li>
+      <li>You're getting headaches almost daily, especially behind the eyes</li>
+      <li>Your vision is blurry even when you're not on a screen</li>
+      <li>You notice double vision or objects appear distorted</li>
+      <li>Your eyes have become very sensitive to light</li>
+      <li>You haven't had an eye test in over a year — just go anyway</li>
+    </ul>
+  </div>
+
+  <p>Many people suffering from digital eye strain actually have a mild, uncorrected refractive error — meaning they slightly need glasses and don't know it. Their eyes compensate by working overtime, which is fine for occasional use but brutal after hours on a phone. A simple eye test can catch this.</p>
+
+  <p>Annual eye check-ups are not just for people who already wear glasses. They're for everyone.</p>
+
+  <hr class="section-rule">
+
+  <div class="conclusion">
+    <p>Your eyes work every single waking hour without a break. They process colour, depth, movement, and detail simultaneously — all day, every day. The least we can do is give them a fighting chance. The 20-20-20 rule costs nothing. Adjusting your brightness takes ten seconds. Blinking is literally free. These are small habits, but over months and years, they make a genuine difference — not just to how your eyes feel today, but to your vision long-term.</p>
+    <p style="margin-top: 1.2rem;">Put the phone down for twenty seconds after reading this. Look outside. Then come back.</p>
+    <p class="sign">— Written by an optometrist who also loves his phone a little too much.</p>
+  </div>
+
+</div>
+</body>
+</html>
