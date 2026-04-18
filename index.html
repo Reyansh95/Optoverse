@@ -5,1094 +5,400 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Optoverse — Eye Health & Optometry</title>
 <meta name="description" content="Eye health simplified. Expert optometry insights, practical guides, and resources for patients and students across India.">
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;1,9..40,300&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-:root {
-  --bg: #020810;
-  --bg2: #040d1a;
-  --teal: #00f5e4;
-  --teal2: #00c4b4;
-  --blue: #0066ff;
-  --purple: #7b2fff;
-  --white: #e8f0fe;
-  --dim: #6a7fa8;
-  --card: rgba(255,255,255,0.03);
-  --border: rgba(0,245,228,0.12);
-  --font-head: 'Syne', sans-serif;
-  --font-body: 'DM Sans', sans-serif;
-}
-
-html { scroll-behavior: smooth; }
-
-body {
-  background: var(--bg);
-  color: var(--white);
-  font-family: var(--font-body);
-  font-size: 16px;
-  line-height: 1.7;
-  overflow-x: hidden;
-}
-
-/* ═══════════════════════════════
-   ANIMATED BACKGROUND
-═══════════════════════════════ */
-.bg-canvas {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  overflow: hidden;
-  pointer-events: none;
-}
-
-.bg-orb {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(80px);
-  animation: orbFloat 8s ease-in-out infinite;
-}
-
-.bg-orb-1 {
-  width: 600px; height: 600px;
-  background: radial-gradient(circle, rgba(0,102,255,0.15) 0%, transparent 70%);
-  top: -200px; left: -100px;
-  animation-delay: 0s;
-}
-
-.bg-orb-2 {
-  width: 500px; height: 500px;
-  background: radial-gradient(circle, rgba(0,245,228,0.1) 0%, transparent 70%);
-  top: 20%; right: -150px;
-  animation-delay: -3s;
-}
-
-.bg-orb-3 {
-  width: 400px; height: 400px;
-  background: radial-gradient(circle, rgba(123,47,255,0.12) 0%, transparent 70%);
-  bottom: 20%; left: 30%;
-  animation-delay: -5s;
-}
-
-@keyframes orbFloat {
-  0%, 100% { transform: translate(0, 0) scale(1); }
-  33% { transform: translate(30px, -40px) scale(1.05); }
-  66% { transform: translate(-20px, 20px) scale(0.95); }
-}
-
-/* Grid overlay */
-.bg-grid {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  background-image:
-    linear-gradient(rgba(0,245,228,0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0,245,228,0.03) 1px, transparent 1px);
-  background-size: 80px 80px;
-  pointer-events: none;
-}
-
-/* Scan line effect */
-.bg-scan {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  background: repeating-linear-gradient(
-    0deg,
-    transparent,
-    transparent 2px,
-    rgba(0,0,0,0.03) 2px,
-    rgba(0,0,0,0.03) 4px
-  );
-  pointer-events: none;
-}
-
-/* ═══════════════════════════════
-   NAVIGATION
-═══════════════════════════════ */
-nav {
-  position: fixed;
-  top: 0; left: 0; right: 0;
-  z-index: 100;
-  height: 68px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 48px;
-  background: rgba(2,8,16,0.7);
-  backdrop-filter: blur(20px);
-  border-bottom: 1px solid var(--border);
-}
-
-nav::after {
-  content: '';
-  position: absolute;
-  bottom: 0; left: 10%; right: 10%;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--teal), transparent);
-  opacity: 0.4;
-}
-
-.nav-logo {
-  font-family: var(--font-head);
-  font-size: 1.35rem;
-  font-weight: 800;
-  color: var(--white);
-  text-decoration: none;
-  letter-spacing: -0.02em;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.nav-logo-dot {
-  width: 8px; height: 8px;
-  background: var(--teal);
-  border-radius: 50%;
-  box-shadow: 0 0 10px var(--teal);
-  animation: blink 2s ease-in-out infinite;
-}
-
-@keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.3; }
-}
-
-.nav-logo span { color: var(--teal); }
-
-.nav-links {
-  display: flex;
-  align-items: center;
-  gap: 36px;
-  list-style: none;
-}
-
-.nav-links a {
-  font-size: 12px;
-  font-weight: 400;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--dim);
-  text-decoration: none;
-  transition: color 0.2s;
-}
-
-.nav-links a:hover, .nav-links a.active { color: var(--teal); }
-
-.nav-cta {
-  font-size: 11px !important;
-  font-weight: 600 !important;
-  color: var(--bg) !important;
-  background: var(--teal);
-  padding: 8px 20px;
-  border-radius: 2px;
-  letter-spacing: 0.1em !important;
-  transition: box-shadow 0.2s, opacity 0.2s !important;
-}
-
-.nav-cta:hover {
-  box-shadow: 0 0 20px rgba(0,245,228,0.4) !important;
-  opacity: 0.9;
-}
-
-.nav-toggle {
-  display: none;
-  flex-direction: column;
-  gap: 5px;
-  cursor: pointer;
-  background: none;
-  border: none;
-  padding: 4px;
-}
-
-.nav-toggle span {
-  display: block;
-  width: 22px; height: 2px;
-  background: var(--white);
-  transition: all 0.3s;
-}
-
-/* ═══════════════════════════════
-   HERO
-═══════════════════════════════ */
+/* ── Hero ── */
 .hero {
-  position: relative;
-  z-index: 1;
-  min-height: 100vh;
+  min-height: calc(100vh - 64px);
   display: flex;
   align-items: center;
-  padding: 120px 48px 80px;
-  max-width: 1200px;
-  margin: 0 auto;
+  position: relative;
+  overflow: hidden;
+  padding: 80px 36px;
 }
 
-.hero-inner {
+#hero-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 1140px;
+  margin: 0 auto;
   width: 100%;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 80px;
+  gap: 64px;
   align-items: center;
 }
 
-/* Status pill */
-.status-pill {
-  display: inline-flex;
+.hero-eyebrow {
+  display: flex;
   align-items: center;
-  gap: 8px;
-  background: rgba(0,245,228,0.06);
-  border: 1px solid rgba(0,245,228,0.2);
-  border-radius: 100px;
-  padding: 6px 16px 6px 8px;
+  gap: 14px;
   margin-bottom: 28px;
-  font-size: 11px;
-  letter-spacing: 0.1em;
+}
+
+.hero-eyebrow-line {
+  width: 40px;
+  height: 1px;
+  background: var(--teal);
+}
+
+.hero-eyebrow span {
+  font-size: 10px;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--teal);
-}
-
-.status-dot {
-  width: 6px; height: 6px;
-  background: var(--teal);
-  border-radius: 50%;
-  box-shadow: 0 0 8px var(--teal);
-  animation: blink 2s ease-in-out infinite;
 }
 
 .hero h1 {
-  font-family: var(--font-head);
-  font-size: clamp(2.8rem, 5.5vw, 4.8rem);
-  font-weight: 800;
-  line-height: 1.05;
-  letter-spacing: -0.03em;
-  margin-bottom: 24px;
+  margin-bottom: 26px;
+  color: var(--white);
 }
 
-.hero h1 .line-teal {
-  display: block;
-  background: linear-gradient(90deg, var(--teal), var(--blue));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+.hero h1 em {
+  font-style: italic;
+  color: var(--teal);
+  text-shadow: 0 0 40px rgba(0,229,204,0.4);
 }
-
-.hero h1 .line-white { display: block; color: var(--white); }
 
 .hero-sub {
   font-size: 1.05rem;
-  color: var(--dim);
+  color: var(--white-dim);
+  margin-bottom: 38px;
   line-height: 1.8;
-  margin-bottom: 40px;
-  max-width: 460px;
+  max-width: 440px;
 }
-
-.hero-sub strong { color: var(--white); font-weight: 400; }
 
 .hero-actions {
   display: flex;
-  gap: 14px;
+  gap: 16px;
   flex-wrap: wrap;
-  margin-bottom: 48px;
 }
 
-.btn-glow {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-family: var(--font-body);
-  font-size: 12px;
-  font-weight: 500;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  text-decoration: none;
-  padding: 14px 28px;
-  border-radius: 3px;
-  border: none;
-  cursor: pointer;
-  transition: all 0.25s;
-}
-
-.btn-glow-primary {
-  background: var(--teal);
-  color: var(--bg);
-  box-shadow: 0 0 30px rgba(0,245,228,0.25);
-}
-
-.btn-glow-primary:hover {
-  box-shadow: 0 0 50px rgba(0,245,228,0.45);
-  transform: translateY(-1px);
-}
-
-.btn-glow-outline {
-  background: transparent;
-  color: var(--teal);
-  border: 1px solid rgba(0,245,228,0.3);
-}
-
-.btn-glow-outline:hover {
-  background: rgba(0,245,228,0.06);
-  border-color: var(--teal);
-  box-shadow: 0 0 20px rgba(0,245,228,0.1);
-}
-
-/* Hero stats row */
-.hero-stats {
+/* ── 3D Canvas placeholder ── */
+.hero-3d {
+  position: relative;
   display: flex;
-  gap: 32px;
-}
-
-.hero-stat { text-align: left; }
-
-.hero-stat-num {
-  font-family: var(--font-head);
-  font-size: 1.6rem;
-  font-weight: 700;
-  color: var(--teal);
-  line-height: 1;
-  display: block;
-}
-
-.hero-stat-label {
-  font-size: 11px;
-  color: var(--dim);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  margin-top: 4px;
-}
-
-/* ── Eye Visual ── */
-.hero-visual {
-  display: flex;
-  align-items: center;
   justify-content: center;
-  position: relative;
+  align-items: center;
+  height: 380px;
 }
 
-.eye-wrap {
-  position: relative;
-  width: 320px;
-  height: 320px;
-}
-
-/* Rotating outer rings */
-.ring {
-  position: absolute;
+#eye-canvas {
+  width: 100%;
+  height: 100%;
   border-radius: 50%;
-  border: 1px solid transparent;
+  cursor: grab;
 }
 
-.ring-1 {
-  inset: 0;
-  border-color: rgba(0,245,228,0.1);
-  animation: spin 20s linear infinite;
-}
+#eye-canvas:active { cursor: grabbing; }
 
-.ring-2 {
-  inset: 24px;
-  border-color: rgba(0,102,255,0.15);
-  border-style: dashed;
-  animation: spin 15s linear infinite reverse;
-}
-
-.ring-3 {
-  inset: 48px;
-  border-color: rgba(0,245,228,0.2);
-  animation: spin 25s linear infinite;
-}
-
-@keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-/* Tick marks on ring */
-.ring-1::before, .ring-1::after {
-  content: '';
+.eye-label {
   position: absolute;
-  width: 6px; height: 6px;
-  background: var(--teal);
-  border-radius: 50%;
-  box-shadow: 0 0 8px var(--teal);
-  top: -3px; left: 50%;
+  bottom: -10px;
+  left: 50%;
   transform: translateX(-50%);
-}
-
-.ring-1::after { top: auto; bottom: -3px; }
-
-/* Center eye core */
-.eye-core {
-  position: absolute;
-  inset: 80px;
-  border-radius: 50%;
-  background: radial-gradient(circle at 40% 40%, rgba(0,245,228,0.15), rgba(0,102,255,0.1), transparent);
-  border: 1px solid rgba(0,245,228,0.3);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow:
-    0 0 40px rgba(0,245,228,0.1),
-    inset 0 0 40px rgba(0,102,255,0.1);
-  animation: pulseCore 3s ease-in-out infinite;
-}
-
-@keyframes pulseCore {
-  0%, 100% { box-shadow: 0 0 40px rgba(0,245,228,0.1), inset 0 0 40px rgba(0,102,255,0.1); }
-  50% { box-shadow: 0 0 80px rgba(0,245,228,0.25), inset 0 0 60px rgba(0,102,255,0.15); }
-}
-
-.eye-pupil {
-  width: 60px; height: 60px;
-  border-radius: 50%;
-  background: radial-gradient(circle at 35% 35%, rgba(0,245,228,0.6), var(--blue), #000);
-  box-shadow: 0 0 30px rgba(0,245,228,0.4);
-  animation: pulseCore 3s ease-in-out infinite;
-}
-
-/* Floating data labels */
-.data-label {
-  position: absolute;
-  font-size: 10px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--teal);
-  opacity: 0.7;
-  white-space: nowrap;
-}
-
-.data-label::before {
-  content: '';
-  display: inline-block;
-  width: 20px; height: 1px;
-  background: var(--teal);
-  vertical-align: middle;
-  margin-right: 6px;
-  opacity: 0.5;
-}
-
-.dl-1 { top: 30px; right: -20px; }
-.dl-2 { bottom: 60px; right: -30px; }
-.dl-3 { bottom: 30px; left: -20px; }
-
-/* ═══════════════════════════════
-   MARQUEE BAR
-═══════════════════════════════ */
-.marquee-bar {
-  position: relative;
-  z-index: 1;
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
-  background: rgba(0,245,228,0.02);
-  overflow: hidden;
-  padding: 14px 0;
-}
-
-.marquee-track {
-  display: flex;
-  gap: 0;
-  animation: marquee 20s linear infinite;
-  width: max-content;
-}
-
-.marquee-item {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  padding: 0 32px;
-  font-size: 11px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--dim);
-  white-space: nowrap;
-}
-
-.marquee-item span {
-  color: var(--teal);
-  font-size: 14px;
-}
-
-@keyframes marquee {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
-}
-
-/* ═══════════════════════════════
-   SECTIONS
-═══════════════════════════════ */
-.wrap {
-  position: relative;
-  z-index: 1;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 48px;
-}
-
-.section-pad { padding: 100px 0; }
-
-.section-label {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 16px;
-}
-
-.section-label-line {
-  width: 32px; height: 1px;
-  background: var(--teal);
-  box-shadow: 0 0 8px var(--teal);
-}
-
-.section-label span {
   font-size: 10px;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--teal);
+  color: rgba(0,229,204,0.5);
+  white-space: nowrap;
 }
 
-.section-title {
-  font-family: var(--font-head);
-  font-size: clamp(1.8rem, 3.5vw, 2.8rem);
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  line-height: 1.15;
-  margin-bottom: 16px;
-}
-
-.section-sub {
-  font-size: 1rem;
-  color: var(--dim);
-  max-width: 500px;
-  line-height: 1.75;
-}
-
-.section-header-row {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  margin-bottom: 48px;
-  gap: 20px;
-}
-
-/* ═══════════════════════════════
-   BLOG SECTION
-═══════════════════════════════ */
-.blog-featured {
-  display: grid;
-  grid-template-columns: 1.4fr 1fr;
-  gap: 20px;
-}
-
-.post-card-main {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  padding: 44px;
-  position: relative;
-  overflow: hidden;
-  transition: border-color 0.3s;
-  text-decoration: none;
-  color: inherit;
-  display: block;
-}
-
-.post-card-main:hover { border-color: rgba(0,245,228,0.35); }
-
-.post-card-main::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--teal), transparent);
-  opacity: 0;
-  transition: opacity 0.3s;
-}
-
-.post-card-main:hover::before { opacity: 1; }
-
-.post-card-main::after {
-  content: '';
-  position: absolute;
-  bottom: -60px; right: -60px;
-  width: 200px; height: 200px;
-  background: radial-gradient(circle, rgba(0,245,228,0.05), transparent 70%);
-  border-radius: 50%;
-  pointer-events: none;
-}
-
-.post-tag-pill {
-  display: inline-block;
-  font-size: 9px;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--teal);
-  border: 1px solid rgba(0,245,228,0.25);
-  background: rgba(0,245,228,0.05);
-  padding: 4px 12px;
-  border-radius: 100px;
-  margin-bottom: 20px;
-}
-
-.post-card-title {
-  font-family: var(--font-head);
-  font-size: 1.5rem;
-  font-weight: 700;
-  line-height: 1.2;
-  color: var(--white);
-  margin-bottom: 14px;
-  letter-spacing: -0.01em;
-}
-
-.post-card-excerpt {
-  font-size: 0.9rem;
-  color: var(--dim);
-  line-height: 1.7;
-  margin-bottom: 28px;
-}
-
-.post-card-meta {
-  font-size: 11px;
-  color: rgba(106,127,168,0.6);
-  letter-spacing: 0.06em;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.post-read-link {
-  font-size: 11px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--teal);
-  text-decoration: none;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  transition: gap 0.2s;
-}
-
-.post-read-link:hover { gap: 10px; }
-
-/* Side cards */
-.blog-side {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.post-card-small {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  padding: 24px 26px;
-  flex: 1;
-  transition: border-color 0.25s;
-  text-decoration: none;
-  color: inherit;
-  display: flex;
-  flex-direction: column;
+/* ── Stats bar ── */
+.stats-bar {
+  background: var(--navy-2);
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
   position: relative;
   overflow: hidden;
 }
 
-.post-card-small:hover { border-color: rgba(0,245,228,0.3); }
-
-.coming-blur {
+.stats-bar::before {
+  content: '';
   position: absolute;
   inset: 0;
-  background: rgba(2,8,16,0.6);
-  backdrop-filter: blur(3px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 6px;
+  background: linear-gradient(90deg, transparent, rgba(0,229,204,0.03), transparent);
 }
 
-.coming-label {
-  font-size: 9px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--dim);
-  border: 1px solid rgba(106,127,168,0.2);
-  padding: 6px 14px;
-  border-radius: 100px;
-}
-
-/* ═══════════════════════════════
-   SERVICES
-═══════════════════════════════ */
-.services-row {
+.stats-inner {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 36px;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
 }
 
-.service-card {
-  background: var(--card);
-  border: 1px solid var(--border);
+.stat {
+  text-align: center;
+  padding: 16px;
+  border-right: 1px solid var(--rule);
+  position: relative;
+}
+
+.stat:last-child { border-right: none; }
+
+.stat-num {
+  font-family: var(--font-display);
+  font-size: 2.2rem;
+  color: var(--teal);
+  display: block;
+  line-height: 1;
+  margin-bottom: 8px;
+  text-shadow: 0 0 30px rgba(0,229,204,0.4);
+}
+
+.stat-label {
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--white-dim);
+}
+
+/* ── Blog grid ── */
+.blog-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 24px;
+}
+
+.blog-card-featured {
+  background: var(--card-bg);
+  border: 1px solid var(--rule);
   border-radius: 6px;
-  padding: 28px 24px;
-  transition: all 0.3s;
+  padding: 44px;
+  transition: border-color 0.3s, box-shadow 0.3s;
   position: relative;
   overflow: hidden;
+  backdrop-filter: blur(12px);
 }
 
-.service-card:hover {
-  border-color: rgba(0,245,228,0.3);
-  transform: translateY(-3px);
-  background: rgba(0,245,228,0.03);
+.blog-card-featured:hover {
+  border-color: rgba(0,229,204,0.4);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.4), 0 0 40px rgba(0,229,204,0.06);
 }
 
-.service-card::after {
+.blog-card-featured::after {
   content: '';
   position: absolute;
   bottom: 0; left: 0; right: 0;
   height: 2px;
-  background: linear-gradient(90deg, var(--teal), var(--blue));
-  opacity: 0;
-  transition: opacity 0.3s;
+  background: linear-gradient(90deg, var(--teal), rgba(0,229,204,0.3), transparent);
 }
 
-.service-card:hover::after { opacity: 1; }
-
-.service-glyph {
-  font-size: 1.8rem;
-  margin-bottom: 16px;
+.blog-card-small {
+  background: var(--card-bg);
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  padding: 26px 28px;
+  transition: border-color 0.3s, transform 0.3s;
+  cursor: pointer;
+  text-decoration: none;
   display: block;
-  filter: drop-shadow(0 0 8px rgba(0,245,228,0.3));
+  color: inherit;
+  backdrop-filter: blur(12px);
 }
 
-.service-name {
-  font-family: var(--font-head);
-  font-size: 0.95rem;
-  font-weight: 600;
+.blog-card-small:hover {
+  border-color: rgba(0,229,204,0.35);
+  transform: translateX(4px);
+}
+
+.post-tag {
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--teal);
+  margin-bottom: 10px;
+  display: block;
+}
+
+.post-title {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  color: var(--white);
+  margin-bottom: 12px;
+  line-height: 1.3;
+}
+
+.post-excerpt {
+  font-size: 0.9rem;
+  color: var(--white-dim);
+  line-height: 1.7;
+  margin-bottom: 20px;
+}
+
+.post-meta {
+  font-size: 11px;
+  color: rgba(148,170,191,0.6);
+  letter-spacing: 0.06em;
+}
+
+/* ── Services ── */
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-top: 0;
+}
+
+.service-card {
+  background: var(--card-bg);
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  padding: 28px 24px;
+  transition: all 0.3s;
+  backdrop-filter: blur(12px);
+}
+
+.service-card:hover {
+  border-color: rgba(0,229,204,0.4);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.35), 0 0 20px rgba(0,229,204,0.06);
+}
+
+.service-icon {
+  font-size: 1.6rem;
+  margin-bottom: 14px;
+  display: block;
+}
+
+.service-title {
+  font-family: var(--font-display);
+  font-size: 1rem;
   color: var(--white);
   margin-bottom: 8px;
 }
 
 .service-desc {
-  font-size: 0.83rem;
-  color: var(--dim);
-  line-height: 1.6;
+  font-size: 0.85rem;
+  color: var(--white-dim);
+  line-height: 1.65;
 }
 
-/* ═══════════════════════════════
-   NOTES SECTION
-═══════════════════════════════ */
-.notes-block {
-  background: linear-gradient(135deg, rgba(0,102,255,0.06) 0%, rgba(0,245,228,0.04) 50%, rgba(123,47,255,0.06) 100%);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 64px 56px;
+/* ── Notes teaser ── */
+.notes-teaser {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 60px;
+  grid-template-columns: 1fr 1.1fr;
+  gap: 64px;
+  background: linear-gradient(135deg, rgba(0,229,204,0.04) 0%, rgba(8,21,42,0.8) 60%);
+  border: 1px solid rgba(0,229,204,0.2);
+  border-radius: 8px;
+  padding: 56px;
   align-items: center;
   position: relative;
   overflow: hidden;
+  backdrop-filter: blur(12px);
 }
 
-.notes-block::before {
-  content: '';
+.notes-teaser::before {
+  content: 'NOTES';
   position: absolute;
-  top: -1px; left: 10%; right: 10%;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--teal), transparent);
-}
-
-.notes-block::after {
-  content: '';
-  position: absolute;
-  bottom: -1px; left: 10%; right: 10%;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--blue), transparent);
-}
-
-.notes-badge-row {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 20px;
+  right: -30px;
+  top: 50%;
+  transform: translateY(-50%) rotate(90deg);
+  font-family: var(--font-display);
+  font-size: 140px;
+  color: rgba(0,229,204,0.025);
+  letter-spacing: 0.1em;
+  pointer-events: none;
+  white-space: nowrap;
+  user-select: none;
 }
 
 .notes-badge {
-  font-size: 9px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(0,229,204,0.08);
+  border: 1px solid rgba(0,229,204,0.3);
+  color: var(--teal);
+  font-size: 10px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--teal);
-  border: 1px solid rgba(0,245,228,0.25);
-  background: rgba(0,245,228,0.05);
-  padding: 5px 14px;
-  border-radius: 100px;
+  padding: 6px 14px;
+  border-radius: 2px;
+  margin-bottom: 22px;
 }
 
-.notes-items {
+.notes-list {
+  list-style: none;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
 }
 
-.notes-item {
+.notes-list li {
   display: flex;
   align-items: center;
   gap: 14px;
-  padding: 14px 18px;
-  background: rgba(2,8,16,0.6);
-  border: 1px solid var(--border);
+  padding: 16px 18px;
+  background: rgba(5,13,26,0.6);
+  border: 1px solid var(--rule);
   border-radius: 4px;
   font-size: 0.88rem;
-  color: var(--dim);
-  transition: border-color 0.2s;
+  color: var(--white-dim);
+  transition: border-color 0.2s, transform 0.2s;
 }
 
-.notes-item:hover { border-color: rgba(0,245,228,0.2); color: var(--white); }
-.notes-item-icon { font-size: 1rem; }
+.notes-list li:hover {
+  border-color: rgba(0,229,204,0.25);
+  transform: translateX(4px);
+}
 
-.notes-lock {
-  margin-left: auto;
-  font-size: 9px;
+.notes-list li .lock {
+  font-size: 10px;
+  background: rgba(0,229,204,0.08);
+  border: 1px solid rgba(0,229,204,0.2);
+  color: var(--teal);
+  padding: 3px 9px;
+  border-radius: 2px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--teal);
-  border: 1px solid rgba(0,245,228,0.2);
-  background: rgba(0,245,228,0.06);
-  padding: 3px 10px;
-  border-radius: 100px;
   flex-shrink: 0;
+  margin-left: auto;
 }
 
-/* ═══════════════════════════════
-   ABOUT STRIP
-═══════════════════════════════ */
-.about-strip {
+/* ── Practice section ── */
+.practice-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 60px;
+  gap: 56px;
   align-items: center;
 }
 
-.about-visual {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+/* ── Responsive ── */
+@media (max-width: 960px) {
+  .hero-content { grid-template-columns: 1fr; gap: 40px; }
+  .hero-3d { display: none; }
+  .blog-grid { grid-template-columns: 1fr; }
+  .notes-teaser { grid-template-columns: 1fr; padding: 40px 28px; }
+  .stats-inner { grid-template-columns: repeat(2, 1fr); }
+  .stat:nth-child(2) { border-right: none; }
+  .practice-grid { grid-template-columns: 1fr; gap: 40px; }
 }
 
-.about-card-visual {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 36px;
-  width: 100%;
-  position: relative;
-  overflow: hidden;
-}
-
-.about-card-visual::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--teal), transparent);
-}
-
-.about-avatar {
-  width: 64px; height: 64px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, var(--teal), var(--blue));
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.6rem;
-  margin-bottom: 16px;
-  box-shadow: 0 0 24px rgba(0,245,228,0.2);
-}
-
-.about-card-name {
-  font-family: var(--font-head);
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: var(--white);
-  margin-bottom: 4px;
-}
-
-.about-card-role {
-  font-size: 11px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--teal);
-  margin-bottom: 20px;
-}
-
-.about-card-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.about-tag {
-  font-size: 10px;
-  letter-spacing: 0.08em;
-  color: var(--dim);
-  border: 1px solid var(--border);
-  padding: 4px 12px;
-  border-radius: 100px;
-}
-
-/* ═══════════════════════════════
-   FOOTER
-═══════════════════════════════ */
-footer {
-  position: relative;
-  z-index: 1;
-  border-top: 1px solid var(--border);
-  padding: 56px 48px;
-  text-align: center;
-}
-
-footer::before {
-  content: '';
-  position: absolute;
-  top: -1px; left: 20%; right: 20%;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--teal), transparent);
-}
-
-.footer-logo {
-  font-family: var(--font-head);
-  font-size: 1.5rem;
-  font-weight: 800;
-  color: var(--white);
-  margin-bottom: 12px;
-  letter-spacing: -0.02em;
-}
-
-.footer-logo span { color: var(--teal); }
-
-footer p {
-  font-size: 13px;
-  color: var(--dim);
-  margin-bottom: 6px;
-}
-
-.footer-nav {
-  display: flex;
-  gap: 28px;
-  justify-content: center;
-  list-style: none;
-  margin: 24px 0;
-  flex-wrap: wrap;
-}
-
-.footer-nav a {
-  font-size: 11px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--dim);
-  text-decoration: none;
-  transition: color 0.2s;
-}
-
-.footer-nav a:hover { color: var(--teal); }
-
-.footer-copy {
-  font-size: 11px;
-  color: rgba(106,127,168,0.4);
-  margin-top: 20px;
-}
-
-/* ═══════════════════════════════
-   DIVIDER
-═══════════════════════════════ */
-.glow-divider {
-  position: relative;
-  z-index: 1;
-  height: 1px;
-  background: var(--border);
-  overflow: visible;
-}
-
-.glow-divider::after {
-  content: '';
-  position: absolute;
-  left: 20%; right: 20%;
-  top: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--teal), transparent);
-  opacity: 0.5;
-}
-
-/* ═══════════════════════════════
-   ANIMATIONS
-═══════════════════════════════ */
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(30px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.fade-up { animation: fadeUp 0.8s ease both; }
-.fade-up-2 { animation: fadeUp 0.8s 0.15s ease both; }
-.fade-up-3 { animation: fadeUp 0.8s 0.3s ease both; }
-.fade-up-4 { animation: fadeUp 0.8s 0.45s ease both; }
-
-/* ═══════════════════════════════
-   RESPONSIVE
-═══════════════════════════════ */
-@media (max-width: 1024px) {
-  .services-row { grid-template-columns: repeat(2, 1fr); }
-  .notes-block { grid-template-columns: 1fr; padding: 48px 36px; gap: 36px; }
-  .about-strip { grid-template-columns: 1fr; }
-}
-
-@media (max-width: 900px) {
-  nav { padding: 0 24px; }
-  .hero { padding: 100px 24px 60px; }
-  .hero-inner { grid-template-columns: 1fr; gap: 48px; }
-  .hero-visual { display: none; }
-  .wrap { padding: 0 24px; }
-  .blog-featured { grid-template-columns: 1fr; }
-}
-
-@media (max-width: 600px) {
-  .services-row { grid-template-columns: 1fr; }
-  .hero-stats { gap: 20px; }
-  footer { padding: 40px 24px; }
-}
-
-@media (max-width: 768px) {
-  .nav-links {
-    display: none;
-    position: fixed;
-    top: 68px; left: 0; right: 0;
-    background: rgba(2,8,16,0.97);
-    backdrop-filter: blur(20px);
-    flex-direction: column;
-    padding: 24px;
-    gap: 0;
-    border-bottom: 1px solid var(--border);
-  }
-  .nav-links.open { display: flex; }
-  .nav-links li { border-bottom: 1px solid var(--border); }
-  .nav-links li:last-child { border: none; }
-  .nav-links a { display: block; padding: 14px 0; font-size: 14px; }
-  .nav-toggle { display: flex; }
+@media (max-width: 560px) {
+  .hero { padding: 48px 20px; }
+  .services-grid { grid-template-columns: 1fr; }
+  .section-header { flex-direction: column; align-items: flex-start; }
+  .stats-inner { grid-template-columns: repeat(2,1fr); }
+  .notes-teaser { padding: 32px 20px; }
 }
 </style>
 </head>
 <body>
 
-<!-- Background layers -->
-<div class="bg-canvas">
-  <div class="bg-orb bg-orb-1"></div>
-  <div class="bg-orb bg-orb-2"></div>
-  <div class="bg-orb bg-orb-3"></div>
-</div>
-<div class="bg-grid"></div>
-<div class="bg-scan"></div>
-
-<!-- Nav -->
-<nav>
-  <a href="index.html" class="nav-logo">
-    <div class="nav-logo-dot"></div>
-    Opto<span>verse</span>
-  </a>
+<nav id="navbar">
+  <a href="index.html" class="nav-logo">Opto<span>verse</span></a>
   <ul class="nav-links" id="navLinks">
     <li><a href="index.html" class="active">Home</a></li>
     <li><a href="blog.html">Blog</a></li>
@@ -1106,237 +412,500 @@ footer p {
   </button>
 </nav>
 
-<!-- ═══ HERO ═══ -->
-<section class="hero">
-  <div class="hero-inner">
-    <div>
-      <div class="status-pill fade-up">
-        <div class="status-dot"></div>
-        Optometry · Eye Health · India
-      </div>
-      <h1 class="fade-up-2">
-        <span class="line-white">See the world</span>
-        <span class="line-teal">with clarity.</span>
-      </h1>
-      <p class="hero-sub fade-up-3">
-        Eye health simplified — for <strong>patients across India</strong> and optometry students who want to go further. Written by a practising optometrist from West Bengal.
-      </p>
-      <div class="hero-actions fade-up-4">
-        <a href="blog.html" class="btn-glow btn-glow-primary">Read the Blog →</a>
-        <a href="notes.html" class="btn-glow btn-glow-outline">Optometry Notes</a>
-      </div>
-      <div class="hero-stats fade-up-4">
-        <div class="hero-stat">
-          <span class="hero-stat-num">50+</span>
-          <span class="hero-stat-label">Days Clinical</span>
+<main>
+
+  <!-- Hero with 3D background + 3D eye -->
+  <section class="hero">
+    <canvas id="hero-canvas"></canvas>
+    <div class="hero-content">
+      <div>
+        <div class="hero-eyebrow fade-up">
+          <div class="hero-eyebrow-line"></div>
+          <span>Optometry · Eye Health · Education</span>
         </div>
-        <div class="hero-stat">
-          <span class="hero-stat-num">1k+</span>
-          <span class="hero-stat-label">Patients Seen</span>
-        </div>
-        <div class="hero-stat">
-          <span class="hero-stat-num">100%</span>
-          <span class="hero-stat-label">Free to Read</span>
+        <h1 class="fade-up-2">See the world<br>with <em>clarity.</em></h1>
+        <p class="hero-sub fade-up-3">Eye health simplified — for patients across India and optometry students who want to go further. Written by a practising optometrist.</p>
+        <div class="hero-actions fade-up-4">
+          <a href="blog.html" class="btn btn-primary">Read the Blog</a>
+          <a href="notes.html" class="btn btn-outline">Optometry Notes</a>
         </div>
       </div>
+      <div class="hero-3d fade-up-3">
+        <canvas id="eye-canvas"></canvas>
+        <div class="eye-label">Interactive · Drag to rotate</div>
+      </div>
     </div>
+  </section>
 
-    <div class="hero-visual fade-up-3">
-      <div class="eye-wrap">
-        <div class="ring ring-1"></div>
-        <div class="ring ring-2"></div>
-        <div class="ring ring-3"></div>
-        <div class="eye-core">
-          <div class="eye-pupil"></div>
+  <!-- Stats -->
+  <div class="stats-bar">
+    <div class="stats-inner">
+      <div class="stat reveal">
+        <span class="stat-num" data-target="50">0</span>
+        <span class="stat-label">Days Clinical Camp</span>
+      </div>
+      <div class="stat reveal reveal-delay-1">
+        <span class="stat-num" data-target="1000">0</span>
+        <span class="stat-label">Patients Examined</span>
+      </div>
+      <div class="stat reveal reveal-delay-2">
+        <span class="stat-num" data-target="5">0</span>
+        <span class="stat-label">Blog Articles</span>
+      </div>
+      <div class="stat reveal reveal-delay-3">
+        <span class="stat-num">100%</span>
+        <span class="stat-label">Free to Read</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Latest Blog -->
+  <section class="section">
+    <div class="section-header">
+      <div>
+        <div class="tag">Latest</div>
+        <h2>From the Blog</h2>
+      </div>
+      <a href="blog.html" class="btn btn-outline" style="flex-shrink:0">All Posts →</a>
+    </div>
+    <div class="blog-grid">
+      <div class="blog-card-featured reveal">
+        <span class="post-tag">Eye Health · Optometry</span>
+        <div class="post-title" style="font-size:1.55rem; margin-bottom:16px;">Why Your Eyes Hurt After Using Your Phone (And How to Fix It)</div>
+        <p class="post-excerpt">You pick up your phone to check a notification. An hour later, your eyes are burning, your head is pounding, and the world looks slightly blurry. Sound familiar? Here's the full breakdown — causes, symptoms, and practical fixes.</p>
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-top:28px;">
+          <span class="post-meta">April 2026 · 5 min read</span>
+          <a href="post.html" class="btn btn-outline" style="padding:8px 20px; font-size:11px;">Read →</a>
         </div>
-        <div class="data-label dl-1">Visual Acuity</div>
-        <div class="data-label dl-2">Refraction</div>
-        <div class="data-label dl-3">Ocular Health</div>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:16px;">
+        <a href="blog.html" class="blog-card-small reveal">
+          <span class="post-tag">Students</span>
+          <div class="post-title" style="font-size:1rem;">Do Blue Light Glasses Actually Work?</div>
+          <span class="post-meta">Coming soon</span>
+        </a>
+        <a href="blog.html" class="blog-card-small reveal reveal-delay-1">
+          <span class="post-tag">Parents</span>
+          <div class="post-title" style="font-size:1rem;">Signs Your Child Needs Glasses</div>
+          <span class="post-meta">Coming soon</span>
+        </a>
+        <a href="blog.html" class="blog-card-small reveal reveal-delay-2">
+          <span class="post-tag">Clinical</span>
+          <div class="post-title" style="font-size:1rem;">Understanding Cataracts: A Simple Guide</div>
+          <span class="post-meta">Coming soon</span>
+        </a>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- ═══ MARQUEE ═══ -->
-<div class="marquee-bar">
-  <div class="marquee-track">
-    <div class="marquee-item"><span>◆</span> Digital Eye Strain</div>
-    <div class="marquee-item"><span>◆</span> Refraction & Optics</div>
-    <div class="marquee-item"><span>◆</span> Contact Lens Fitting</div>
-    <div class="marquee-item"><span>◆</span> Binocular Vision</div>
-    <div class="marquee-item"><span>◆</span> Cataract Awareness</div>
-    <div class="marquee-item"><span>◆</span> Low Vision Rehab</div>
-    <div class="marquee-item"><span>◆</span> Paediatric Eye Care</div>
-    <div class="marquee-item"><span>◆</span> Rural Eye Health</div>
-    <div class="marquee-item"><span>◆</span> Digital Eye Strain</div>
-    <div class="marquee-item"><span>◆</span> Refraction & Optics</div>
-    <div class="marquee-item"><span>◆</span> Contact Lens Fitting</div>
-    <div class="marquee-item"><span>◆</span> Binocular Vision</div>
-    <div class="marquee-item"><span>◆</span> Cataract Awareness</div>
-    <div class="marquee-item"><span>◆</span> Low Vision Rehab</div>
-    <div class="marquee-item"><span>◆</span> Paediatric Eye Care</div>
-    <div class="marquee-item"><span>◆</span> Rural Eye Health</div>
-  </div>
-</div>
+  <hr class="rule">
 
-<!-- ═══ BLOG ═══ -->
-<div class="glow-divider"></div>
-<div class="wrap section-pad">
-  <div class="section-header-row">
-    <div>
-      <div class="section-label">
-        <div class="section-label-line"></div>
-        <span>Latest Articles</span>
+  <!-- Practice Info -->
+  <section class="section">
+    <div class="practice-grid">
+      <div class="reveal">
+        <div class="tag">Practice</div>
+        <h2 style="margin-bottom:20px;">Expert Eye Care<br>in <span class="text-teal">West Bengal</span></h2>
+        <p style="color:var(--white-dim); margin-bottom:16px;">Practising optometrist with hands-on clinical experience across rural and urban settings — from community eye camps in Diamond Harbour to optical retail in Kolkata.</p>
+        <p style="color:var(--white-dim); margin-bottom:32px;">Comprehensive eye examinations, spectacle prescriptions, contact lens fitting, and patient education in a language you actually understand.</p>
+        <a href="contact.html" class="btn btn-primary">Book a Consultation</a>
       </div>
-      <h2 class="section-title">From the Blog</h2>
-    </div>
-    <a href="blog.html" class="btn-glow btn-glow-outline" style="flex-shrink:0;">All Posts →</a>
-  </div>
-
-  <div class="blog-featured">
-    <a href="post.html" class="post-card-main">
-      <span class="post-tag-pill">Eye Health · Digital Strain</span>
-      <div class="post-card-title">Why Your Eyes Hurt After Using Your Phone</div>
-      <p class="post-card-excerpt">Burning eyes, pounding headache, blurry vision after screen time — you're not imagining it. Here's the complete breakdown of digital eye strain: causes, symptoms, and fixes that actually work.</p>
-      <div class="post-card-meta">
-        <span>April 2026 · 5 min read</span>
-        <span class="post-read-link">Read Article →</span>
-      </div>
-    </a>
-    <div class="blog-side">
-      <div class="post-card-small">
-        <span class="post-tag-pill">Digital Health</span>
-        <div class="post-card-title" style="font-size:1rem;">Do Blue Light Glasses Actually Work?</div>
-        <div class="coming-blur"><span class="coming-label">Coming Soon</span></div>
-      </div>
-      <div class="post-card-small">
-        <span class="post-tag-pill">Children</span>
-        <div class="post-card-title" style="font-size:1rem;">Signs Your Child Needs Glasses</div>
-        <div class="coming-blur"><span class="coming-label">Coming Soon</span></div>
-      </div>
-      <div class="post-card-small">
-        <span class="post-tag-pill">Clinical</span>
-        <div class="post-card-title" style="font-size:1rem;">Understanding Cataracts</div>
-        <div class="coming-blur"><span class="coming-label">Coming Soon</span></div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- ═══ SERVICES ═══ -->
-<div class="glow-divider"></div>
-<div class="wrap section-pad">
-  <div class="section-label">
-    <div class="section-label-line"></div>
-    <span>Practice</span>
-  </div>
-  <div class="section-header-row">
-    <div>
-      <h2 class="section-title">Expert Eye Care<br>in West Bengal</h2>
-    </div>
-    <p class="section-sub" style="max-width:380px;">Hands-on clinical experience across rural eye camps and optical practice — comprehensive exams, prescriptions, and patient education.</p>
-  </div>
-  <div class="services-row">
-    <div class="service-card">
-      <span class="service-glyph">🔬</span>
-      <div class="service-name">Comprehensive Eye Exams</div>
-      <p class="service-desc">Full refraction and ocular health assessment with precision.</p>
-    </div>
-    <div class="service-card">
-      <span class="service-glyph">👓</span>
-      <div class="service-name">Spectacle Prescriptions</div>
-      <p class="service-desc">Accurate prescriptions for glasses and contact lenses.</p>
-    </div>
-    <div class="service-card">
-      <span class="service-glyph">📋</span>
-      <div class="service-name">Patient Consultations</div>
-      <p class="service-desc">Digital eye strain, dry eye, and vision counselling.</p>
-    </div>
-    <div class="service-card">
-      <span class="service-glyph">🏕️</span>
-      <div class="service-name">Rural Eye Health</div>
-      <p class="service-desc">Community screening and outreach — where it matters most.</p>
-    </div>
-  </div>
-</div>
-
-<!-- ═══ NOTES ═══ -->
-<div class="glow-divider"></div>
-<div class="wrap section-pad">
-  <div class="notes-block">
-    <div>
-      <div class="notes-badge-row">
-        <span class="notes-badge">🔒 Premium</span>
-        <span class="notes-badge" style="border-color:rgba(0,102,255,0.25); color:#6699ff; background:rgba(0,102,255,0.05);">For Students</span>
-      </div>
-      <h2 class="section-title" style="margin-bottom:14px;">Optometry Notes<br>for Serious Students</h2>
-      <p style="color:var(--dim); line-height:1.8; margin-bottom:28px; font-size:0.95rem;">Curated study materials, solved past question papers, and clinical summaries across all major B.Optom subjects — written by a practitioner who sat the same exams.</p>
-      <a href="notes.html" class="btn-glow btn-glow-primary">View All Notes →</a>
-    </div>
-    <div class="notes-items">
-      <div class="notes-item"><span class="notes-item-icon">📄</span> Ocular Anatomy — Complete Notes <span class="notes-lock">₹199</span></div>
-      <div class="notes-item"><span class="notes-item-icon">📝</span> Refraction & Optics Solved PYQs <span class="notes-lock">₹199</span></div>
-      <div class="notes-item"><span class="notes-item-icon">👀</span> Binocular Vision Short Notes <span class="notes-lock">₹199</span></div>
-      <div class="notes-item"><span class="notes-item-icon">🥽</span> Contact Lens Fitting Guide <span class="notes-lock">₹199</span></div>
-      <div class="notes-item"><span class="notes-item-icon">🦯</span> Low Vision Rehabilitation <span class="notes-lock">₹199</span></div>
-    </div>
-  </div>
-</div>
-
-<!-- ═══ ABOUT STRIP ═══ -->
-<div class="glow-divider"></div>
-<div class="wrap section-pad">
-  <div class="about-strip">
-    <div class="about-visual">
-      <div class="about-card-visual">
-        <div class="about-avatar">👁</div>
-        <div class="about-card-name">Rashibul Islam</div>
-        <div class="about-card-role">B.Optom · Optometrist · West Bengal</div>
-        <div class="about-card-tags">
-          <span class="about-tag">NSHM Knowledge Campus</span>
-          <span class="about-tag">Netradeep Eye Hospital</span>
-          <span class="about-tag">Checkoro.com Opticals</span>
-          <span class="about-tag">Diamond Harbour Camp</span>
-          <span class="about-tag">Murshidabad</span>
+      <div class="services-grid reveal reveal-delay-1">
+        <div class="service-card">
+          <span class="service-icon">🔬</span>
+          <div class="service-title">Eye Exams</div>
+          <p class="service-desc">Comprehensive refraction and ocular health assessment.</p>
         </div>
-        <div style="margin-top:20px; padding:14px; background:rgba(0,245,228,0.04); border:1px solid rgba(0,245,228,0.12); border-radius:4px; font-size:12px; color:var(--teal); font-style:italic; text-align:center; line-height:1.6;">
-          Building toward a small clinic in Murshidabad — where it's needed most.
+        <div class="service-card">
+          <span class="service-icon">👓</span>
+          <div class="service-title">Prescriptions</div>
+          <p class="service-desc">Accurate spectacle and contact lens prescriptions.</p>
+        </div>
+        <div class="service-card">
+          <span class="service-icon">📋</span>
+          <div class="service-title">Consultations</div>
+          <p class="service-desc">Digital eye strain, dry eye, and patient counselling.</p>
+        </div>
+        <div class="service-card">
+          <span class="service-icon">🏕️</span>
+          <div class="service-title">Eye Camps</div>
+          <p class="service-desc">Rural outreach and community screening experience.</p>
         </div>
       </div>
     </div>
-    <div>
-      <div class="section-label">
-        <div class="section-label-line"></div>
-        <span>About</span>
-      </div>
-      <h2 class="section-title" style="margin-bottom:16px;">The person<br>behind Optoverse.</h2>
-      <p style="color:var(--dim); line-height:1.8; margin-bottom:16px;">I'm Rashibul — an optometrist from Murshidabad. I've worked in hospitals, optical retail, and rural eye camps. Everything I've seen has led to one goal: making quality eye care accessible to people who need it, and making eye health information something anyone can actually understand.</p>
-      <p style="color:var(--dim); line-height:1.8; margin-bottom:32px;">Optoverse is where that mission lives online — honest articles for patients, solid notes for students.</p>
-      <a href="about.html" class="btn-glow btn-glow-outline">Read Full Story →</a>
-    </div>
-  </div>
-</div>
+  </section>
 
-<!-- Footer -->
+  <hr class="rule">
+
+  <!-- Notes Teaser -->
+  <section class="section">
+    <div class="notes-teaser reveal">
+      <div>
+        <div class="notes-badge">🔒 Premium Resource</div>
+        <h2 style="margin-bottom:16px;">Optometry Notes<br>for <span class="text-teal">Serious Students</span></h2>
+        <p style="color:var(--white-dim); margin-bottom:12px;">Curated study materials, past question papers, and clinical summaries — written by a practitioner, not copied from textbooks.</p>
+        <p style="color:var(--white-dim); margin-bottom:32px;">Perfect for B.Optom and M.Optom students preparing for university exams.</p>
+        <a href="notes.html" class="btn btn-primary">View Notes →</a>
+      </div>
+      <ul class="notes-list">
+        <li>Ocular Anatomy — Complete Notes <span class="lock">Paid</span></li>
+        <li>Refraction & Optics Solved PYQs <span class="lock">Paid</span></li>
+        <li>Binocular Vision Short Notes <span class="lock">Paid</span></li>
+        <li>Contact Lens Fitting Guide <span class="lock">Paid</span></li>
+        <li>Low Vision Rehabilitation <span class="lock">Paid</span></li>
+      </ul>
+    </div>
+  </section>
+
+</main>
+
 <footer>
   <div class="footer-logo">Opto<span>verse</span></div>
-  <p>Eye health simplified. Written by Rashibul Islam, Murshidabad, West Bengal.</p>
-  <ul class="footer-nav">
+  <p>Eye health simplified. Written by Optometrist Rashibul, West Bengal.</p>
+  <ul class="footer-links">
     <li><a href="index.html">Home</a></li>
     <li><a href="blog.html">Blog</a></li>
     <li><a href="notes.html">Notes</a></li>
     <li><a href="about.html">About</a></li>
     <li><a href="contact.html">Contact</a></li>
   </ul>
-  <p class="footer-copy">© 2026 Optoverse · All rights reserved.</p>
+  <p class="footer-copy">© 2026 Optoverse. All rights reserved.</p>
 </footer>
 
 <script>
-  const toggle = document.getElementById('navToggle');
-  const links = document.getElementById('navLinks');
-  toggle.addEventListener('click', () => links.classList.toggle('open'));
-  links.querySelectorAll('a').forEach(a => a.addEventListener('click', () => links.classList.remove('open')));
-</script>
+/* ── Nav scroll effect ── */
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 40);
+});
 
+/* ── Mobile nav ── */
+const toggle = document.getElementById('navToggle');
+const links = document.getElementById('navLinks');
+toggle.addEventListener('click', () => links.classList.toggle('open'));
+links.querySelectorAll('a').forEach(a => a.addEventListener('click', () => links.classList.remove('open')));
+
+/* ── Scroll reveal ── */
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+}, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+/* ── Counter animation ── */
+function animateCounter(el, target, suffix) {
+  const start = performance.now();
+  const duration = 1800;
+  const isK = target >= 1000;
+  function update(now) {
+    const p = Math.min((now - start) / duration, 1);
+    const ease = 1 - Math.pow(1 - p, 3);
+    const val = Math.round(ease * target);
+    if (isK) {
+      el.textContent = val >= 1000 ? '1k+' : val + '';
+    } else {
+      el.textContent = val + (p === 1 ? '+' : '');
+    }
+    if (p < 1) requestAnimationFrame(update);
+  }
+  requestAnimationFrame(update);
+}
+
+const counterObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const target = parseInt(e.target.dataset.target);
+      animateCounter(e.target, target);
+      counterObserver.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.5 });
+document.querySelectorAll('[data-target]').forEach(el => counterObserver.observe(el));
+
+/* ═══════════════════════════════════════════
+   THREE.JS — Hero background particle field
+═══════════════════════════════════════════ */
+(function initHeroBg() {
+  const canvas = document.getElementById('hero-canvas');
+  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+  function resize() {
+    renderer.setSize(canvas.parentElement.offsetWidth, canvas.parentElement.offsetHeight);
+    camera.aspect = canvas.parentElement.offsetWidth / canvas.parentElement.offsetHeight;
+    camera.updateProjectionMatrix();
+  }
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(60, 1, 0.1, 100);
+  camera.position.z = 5;
+
+  // Floating particles
+  const particleCount = 200;
+  const positions = new Float32Array(particleCount * 3);
+  for (let i = 0; i < particleCount; i++) {
+    positions[i * 3]     = (Math.random() - 0.5) * 20;
+    positions[i * 3 + 1] = (Math.random() - 0.5) * 14;
+    positions[i * 3 + 2] = (Math.random() - 0.5) * 10 - 2;
+  }
+  const pgeo = new THREE.BufferGeometry();
+  pgeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+  const pmat = new THREE.PointsMaterial({
+    color: 0x00e5cc,
+    size: 0.04,
+    transparent: true,
+    opacity: 0.5,
+    sizeAttenuation: true
+  });
+  scene.add(new THREE.Points(pgeo, pmat));
+
+  // Floating rings (depth effect)
+  const ringMat = new THREE.MeshBasicMaterial({ color: 0x00e5cc, transparent: true, opacity: 0.06, wireframe: true });
+  for (let i = 0; i < 4; i++) {
+    const ring = new THREE.Mesh(new THREE.TorusGeometry(2 + i * 1.5, 0.01, 8, 60), ringMat);
+    ring.rotation.x = Math.random() * Math.PI;
+    ring.rotation.y = Math.random() * Math.PI;
+    ring.position.z = -2 - i;
+    scene.add(ring);
+  }
+
+  resize();
+  window.addEventListener('resize', resize);
+
+  let t = 0;
+  function animate() {
+    requestAnimationFrame(animate);
+    t += 0.003;
+    scene.children.forEach((obj, i) => {
+      if (obj.isPoints) {
+        obj.rotation.y = t * 0.05;
+        obj.rotation.x = t * 0.02;
+      } else if (obj.isMesh) {
+        obj.rotation.x += 0.0008 * (i + 1);
+        obj.rotation.y += 0.0005 * (i + 1);
+      }
+    });
+    renderer.render(scene, camera);
+  }
+  animate();
+})();
+
+/* ═══════════════════════════════════════════
+   THREE.JS — 3D Eye Globe (hero right side)
+═══════════════════════════════════════════ */
+(function initEyeGlobe() {
+  const canvas = document.getElementById('eye-canvas');
+  if (!canvas) return;
+
+  const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+  const W = canvas.parentElement.offsetWidth;
+  const H = canvas.parentElement.offsetHeight;
+  renderer.setSize(W, H);
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(45, W / H, 0.1, 100);
+  camera.position.z = 3.5;
+
+  // Lighting
+  const ambient = new THREE.AmbientLight(0x112233, 1.5);
+  scene.add(ambient);
+
+  const tealLight = new THREE.PointLight(0x00e5cc, 4, 8);
+  tealLight.position.set(2, 2, 3);
+  scene.add(tealLight);
+
+  const blueLight = new THREE.PointLight(0x0040ff, 2, 8);
+  blueLight.position.set(-3, -1, 2);
+  scene.add(blueLight);
+
+  const rimLight = new THREE.PointLight(0x00b8a4, 1.5, 6);
+  rimLight.position.set(0, -3, 1);
+  scene.add(rimLight);
+
+  // ── Sclera (white of eye) ──
+  const scleraGeo = new THREE.SphereGeometry(1, 64, 64);
+  const scleraMat = new THREE.MeshStandardMaterial({
+    color: 0xddeeff,
+    roughness: 0.3,
+    metalness: 0.05,
+    transparent: true,
+    opacity: 0.95
+  });
+  const sclera = new THREE.Mesh(scleraGeo, scleraMat);
+  scene.add(sclera);
+
+  // ── Iris ──
+  const irisGeo = new THREE.CylinderGeometry(0.42, 0.42, 0.04, 64, 1, false);
+  const irisMat = new THREE.MeshStandardMaterial({
+    color: 0x008877,
+    roughness: 0.4,
+    metalness: 0.2,
+    emissive: 0x003322,
+    emissiveIntensity: 0.3
+  });
+  const iris = new THREE.Mesh(irisGeo, irisMat);
+  iris.position.z = 0.97;
+  iris.rotation.x = Math.PI / 2;
+  scene.add(iris);
+
+  // Iris texture lines (spokes)
+  const spokesMat = new THREE.MeshBasicMaterial({ color: 0x00e5cc, transparent: true, opacity: 0.25, wireframe: false });
+  for (let i = 0; i < 24; i++) {
+    const angle = (i / 24) * Math.PI * 2;
+    const geo = new THREE.PlaneGeometry(0.01, 0.38);
+    const spoke = new THREE.Mesh(geo, spokesMat);
+    spoke.rotation.z = angle;
+    spoke.position.set(
+      Math.cos(angle) * 0.19,
+      Math.sin(angle) * 0.19,
+      0
+    );
+    iris.add(spoke);
+  }
+
+  // ── Pupil ──
+  const pupilGeo = new THREE.CylinderGeometry(0.16, 0.16, 0.06, 48, 1);
+  const pupilMat = new THREE.MeshStandardMaterial({
+    color: 0x020608,
+    roughness: 0.1,
+    metalness: 0.0,
+    emissive: 0x000000
+  });
+  const pupil = new THREE.Mesh(pupilGeo, pupilMat);
+  pupil.position.z = 0.98;
+  pupil.rotation.x = Math.PI / 2;
+  scene.add(pupil);
+
+  // ── Cornea (transparent dome) ──
+  const corneaGeo = new THREE.SphereGeometry(0.48, 48, 48, 0, Math.PI * 2, 0, Math.PI / 2.2);
+  const corneaMat = new THREE.MeshStandardMaterial({
+    color: 0xaaddff,
+    roughness: 0.0,
+    metalness: 0.1,
+    transparent: true,
+    opacity: 0.18,
+    side: THREE.DoubleSide
+  });
+  const cornea = new THREE.Mesh(corneaGeo, corneaMat);
+  cornea.position.z = 0.52;
+  scene.add(cornea);
+
+  // ── Highlight / specular blob ──
+  const hlGeo = new THREE.SphereGeometry(0.07, 16, 16);
+  const hlMat = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.7 });
+  const highlight = new THREE.Mesh(hlGeo, hlMat);
+  highlight.position.set(0.18, 0.22, 1.02);
+  scene.add(highlight);
+
+  // ── Floating orbital rings ──
+  const orbitMat = new THREE.MeshBasicMaterial({ color: 0x00e5cc, transparent: true, opacity: 0.15, wireframe: true });
+  const ring1 = new THREE.Mesh(new THREE.TorusGeometry(1.4, 0.008, 8, 80), orbitMat.clone());
+  ring1.material.opacity = 0.2;
+  scene.add(ring1);
+
+  const ring2 = new THREE.Mesh(new THREE.TorusGeometry(1.65, 0.005, 8, 80), orbitMat.clone());
+  ring2.material.opacity = 0.1;
+  ring2.rotation.x = Math.PI / 3;
+  scene.add(ring2);
+
+  // ── Floating data particles around eye ──
+  const dotCount = 80;
+  const dotPositions = new Float32Array(dotCount * 3);
+  for (let i = 0; i < dotCount; i++) {
+    const phi = Math.acos(2 * Math.random() - 1);
+    const theta = Math.random() * Math.PI * 2;
+    const r = 1.3 + Math.random() * 0.5;
+    dotPositions[i * 3]     = r * Math.sin(phi) * Math.cos(theta);
+    dotPositions[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta);
+    dotPositions[i * 3 + 2] = r * Math.cos(phi);
+  }
+  const dotGeo = new THREE.BufferGeometry();
+  dotGeo.setAttribute('position', new THREE.BufferAttribute(dotPositions, 3));
+  const dotMat = new THREE.PointsMaterial({ color: 0x00e5cc, size: 0.025, transparent: true, opacity: 0.6 });
+  const dots = new THREE.Points(dotGeo, dotMat);
+  scene.add(dots);
+
+  // ── Drag interaction ──
+  let isDragging = false;
+  let prevMouse = { x: 0, y: 0 };
+  let rotVel = { x: 0, y: 0 };
+  let rotGroup = { x: 0, y: 0 };
+
+  canvas.addEventListener('mousedown', e => { isDragging = true; prevMouse = { x: e.clientX, y: e.clientY }; });
+  window.addEventListener('mouseup', () => { isDragging = false; });
+  window.addEventListener('mousemove', e => {
+    if (!isDragging) return;
+    rotVel.y += (e.clientX - prevMouse.x) * 0.005;
+    rotVel.x += (e.clientY - prevMouse.y) * 0.005;
+    prevMouse = { x: e.clientX, y: e.clientY };
+  });
+
+  canvas.addEventListener('touchstart', e => {
+    isDragging = true;
+    prevMouse = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+  });
+  canvas.addEventListener('touchend', () => { isDragging = false; });
+  canvas.addEventListener('touchmove', e => {
+    if (!isDragging) return;
+    rotVel.y += (e.touches[0].clientX - prevMouse.x) * 0.005;
+    rotVel.x += (e.touches[0].clientY - prevMouse.y) * 0.005;
+    prevMouse = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+  });
+
+  // ── Animate ──
+  let t = 0;
+  function animate() {
+    requestAnimationFrame(animate);
+    t += 0.01;
+
+    // Auto-rotate if not dragging
+    if (!isDragging) {
+      rotVel.y += 0.0015;
+      rotVel.x *= 0.98;
+    }
+    rotVel.y *= 0.92;
+    rotVel.x *= 0.92;
+    rotGroup.y += rotVel.y;
+    rotGroup.x += rotVel.x;
+
+    sclera.rotation.y = rotGroup.y;
+    sclera.rotation.x = rotGroup.x;
+    iris.rotation.y = rotGroup.y;
+    iris.rotation.x = rotGroup.x;
+    pupil.rotation.y = rotGroup.y;
+    pupil.rotation.x = rotGroup.x;
+    cornea.rotation.y = rotGroup.y;
+    cornea.rotation.x = rotGroup.x;
+    highlight.rotation.y = rotGroup.y;
+    highlight.rotation.x = rotGroup.x;
+
+    // Rings float independently
+    ring1.rotation.z = t * 0.2;
+    ring1.rotation.x = Math.sin(t * 0.3) * 0.3;
+    ring2.rotation.z = -t * 0.15;
+    ring2.rotation.y = t * 0.1;
+
+    // Dots orbit
+    dots.rotation.y = t * 0.08;
+    dots.rotation.x = Math.sin(t * 0.1) * 0.2;
+
+    // Light pulse
+    tealLight.intensity = 3.5 + Math.sin(t * 1.5) * 0.8;
+    blueLight.intensity = 1.8 + Math.cos(t * 1.2) * 0.5;
+
+    renderer.render(scene, camera);
+  }
+  animate();
+
+  // Resize
+  window.addEventListener('resize', () => {
+    const W2 = canvas.parentElement.offsetWidth;
+    const H2 = canvas.parentElement.offsetHeight;
+    renderer.setSize(W2, H2);
+    camera.aspect = W2 / H2;
+    camera.updateProjectionMatrix();
+  });
+})();
+</script>
 </body>
 </html>
